@@ -4,18 +4,29 @@ import time
 #import os
 #os.environ["ARGOS_DEVICE_TYPE"] = "cuda"
 
-def translate(text, from_lang, to_lang):
-    if (from_lang, to_lang) not in supported:
-        return "", f"translation form {from_lang} to {to_lang} is not supported"
+def translate(text, source_lang, target_lang):
+    if (source_lang, target_lang) not in supported:
+        return "", f"translation form {source_lang} to {target_lang} is not supported"
     
-    if (from_lang, to_lang) not in installed:
-        argostranslate.package.install_from_path(supported[(from_lang, to_lang)].download())
-        installed.add((from_lang, to_lang))
+    if (source_lang, target_lang) not in installed:
+        argostranslate.package.install_from_path(supported[(source_lang, target_lang)].download())
+        installed.add((source_lang, target_lang))
     
-    translatedText = argostranslate.translate.translate(text, from_lang, to_lang)
+    translatedText = argostranslate.translate.translate(text, source_lang, target_lang)
     return translatedText, ""
 
+def get_languages():
+    res = []
+    for pkg in supported.values():
+        res.append({"srcname": pkg.from_name,
+                    "tarname": pkg.to_name,
+                    "src": pkg.from_code,
+                    "tar": pkg.to_code})
+    
+    return res
+
 if __name__ == "__main__":
+    
     start_time = time.time()
     argostranslate.package.update_package_index()
     
