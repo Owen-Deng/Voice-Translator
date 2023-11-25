@@ -1,2 +1,4 @@
 argostranslate
-TTS # from github
+git+https://github.com/coqui-ai/TTS.git
+fastapi
+uvicorn[standard]

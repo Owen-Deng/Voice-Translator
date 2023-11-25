@@ -87,9 +87,9 @@ def inference(text, language, gpt_cond_latent, speaker_embedding, output_path) -
 if __name__ == "__main__":
     start_time = time.time()
     config = XttsConfig()
-    config.load_json("xtts_model/config.json")
+    config.load_json("Server/XTTS-v2/config.json")
     model = Xtts.init_from_config(config)
-    model.load_checkpoint(config, checkpoint_dir="xtts_model/", eval=True)
+    model.load_checkpoint(config, checkpoint_dir="Server/XTTS-v2/", eval=True)
     model.cuda()
     
     conditioning_latents_settings = {
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     print(f"XTTS model loaded! {time.time()-start_time:.2f}")
     
     ## testing code
-    audio_path=r"Jessie.mp3"
+    audio_path=r"Server/audio/chinese.mp3"
     output_path = r"result.wav"
     text = "This is a test for voice generation."
     start_time = time.time()
