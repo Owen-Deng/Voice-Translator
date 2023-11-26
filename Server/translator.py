@@ -25,8 +25,9 @@ def get_languages():
     
     return res
 
-if __name__ == "__main__":
-    
+
+def load():
+    global supported, installed
     start_time = time.time()
     argostranslate.package.update_package_index()
     
@@ -40,6 +41,10 @@ if __name__ == "__main__":
     translate("warm up", 'en', 'zh')
     
     print(f"Translation model loaded!{time.time() - start_time:.2f}")
+    
+
+if __name__ == "__main__":
+    load()
     
     ## testing code
     text = """We end today's show looking at how Israel's 47-day bombardment has left Gaza in ruins. 

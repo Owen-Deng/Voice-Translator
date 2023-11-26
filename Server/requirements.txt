@@ -1,4 +1,5 @@
 argostranslate
 git+https://github.com/coqui-ai/TTS.git
+pymongo
 fastapi
 uvicorn[standard]

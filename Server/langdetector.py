@@ -29,7 +29,8 @@ def read_lang_index(label_encoder):
     return lang_map
     
 
-if __name__ == "__main__":
+def load():
+    global language_id, lang_map
     start_time = time.time()
     run_opts = {"device":"cuda"}
     # https://huggingface.co/speechbrain/lang-id-voxlingua107-ecapa
@@ -37,6 +38,9 @@ if __name__ == "__main__":
     lang_map = read_lang_index("Server/langdetect_model/label_encoder.txt")
     detect("Server/audio/chinese.mp3", 'zh', 'ja') # warm up
     print(f"language detection model loaded. {time.time() - start_time:.2f}")
+
+if __name__ == "__main__":
+    load()
     
     ## testing code
     start_time = time.time()

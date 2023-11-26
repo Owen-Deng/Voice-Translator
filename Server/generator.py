@@ -17,7 +17,7 @@ def get_conditioning_latents(audio_path):
     return gpt_cond_latent, speaker_embedding
 
 @torch.inference_mode()
-def inference(text, language, gpt_cond_latent, speaker_embedding, output_path) -> str:
+def generate(text, language, gpt_cond_latent, speaker_embedding, output) -> str:
     # GPT inference
     do_sample=True
     num_beams=1
@@ -68,7 +68,8 @@ def inference(text, language, gpt_cond_latent, speaker_embedding, output_path) -
 
         wav = model.hifigan_decoder(gpt_latents, g=speaker_embedding)
         wav = torch.reshape(wav, (1,-1)).cpu()
-        torchaudio.save(output_path, wav, 24000)
+        
+        torchaudio.save(output, wav, 24000, format = "wav")
         
     return ""
 
@@ -81,17 +82,16 @@ def inference(text, language, gpt_cond_latent, speaker_embedding, output_path) -
     #     )
     # wav = torch.tensor(outputs['wav']).unsqueeze(0)
     # torchaudio.save(output_path, wav, 24000)
-    
-    
 
-if __name__ == "__main__":
+def load():
+    global model, conditioning_latents_settings, inference_settings
     start_time = time.time()
     config = XttsConfig()
     config.load_json("Server/XTTS-v2/config.json")
     model = Xtts.init_from_config(config)
     model.load_checkpoint(config, checkpoint_dir="Server/XTTS-v2/", eval=True)
     model.cuda()
-    
+
     conditioning_latents_settings = {
         "gpt_cond_len": config.gpt_cond_len,
         "gpt_cond_chunk_len": config.gpt_cond_chunk_len,
@@ -106,7 +106,9 @@ if __name__ == "__main__":
                 "top_p": config.top_p
             }
     print(f"XTTS model loaded! {time.time()-start_time:.2f}")
-    
+
+if __name__ == "__main__":
+    load()
     ## testing code
     audio_path=r"Server/audio/chinese.mp3"
     output_path = r"result.wav"
@@ -116,6 +118,10 @@ if __name__ == "__main__":
     print(f"gpt_cond_latent generated! {time.time()-start_time:.2f}")
     for _ in range(10):
         s = time.time()
-        inference(text, "en", gpt_cond_latent, speaker_embedding, output_path)
+        import io
+        buffer = io.BytesIO()
+        generate(text, "en", gpt_cond_latent, speaker_embedding, buffer)
+        with open("result.wav", 'wb') as f:
+            f.write(buffer.getbuffer())
         print(f"{time.time() - s:.2f}")
     print(f"total time: {time.time()-start_time:.2f}")

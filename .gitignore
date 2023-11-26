@@ -2,3 +2,4 @@ Server/XTTS-v2
 result.wav
 Server/langdetect_model
 audio_cache
+*.pyc
