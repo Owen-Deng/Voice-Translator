@@ -11,7 +11,7 @@ The Voice Translator App and Server is a project that enables users to interacti
 - **Voice Recognition**: 
 - **Language Translation**: 
 - **Real-time Interaction**:
-- **Sever**
+- **Voice mimic**
 
 ## Tech
 
