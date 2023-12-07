@@ -13,6 +13,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
     var recordingURL: URL?
     var recordingCompletion: ((URL?, Double) -> Void)?
+    var isRecodring=false
 
     override init() {
         super.init()
