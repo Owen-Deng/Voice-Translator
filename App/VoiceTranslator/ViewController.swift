@@ -19,6 +19,9 @@ class ViewController: UIViewController {
     //status enum
     var currentStatus:UIStatus = .unListening
     
+    //audiorecorder
+    let audioRecorder=AudioRecorder()
+    
     enum UIStatus {
         case listening
         case unListening
@@ -30,10 +33,26 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        //call the functiontest
+        functionTest()
     }
     
+    //main config before when the viewcontroller didload
+    func initConfig(){
+        
+    }
     
-    
+    // devloping for functionallity test 
+    func functionTest(){
+        //start record
+        audioRecorder.startRecording()
+        //10s stop
+        DispatchQueue.main.asyncAfter(deadline: .now()+10.0, execute: {
+            self.audioRecorder.stopRecording(success: true)
+        })
+        //play audio
+    }
     
     
     

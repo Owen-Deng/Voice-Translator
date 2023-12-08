@@ -13,7 +13,6 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
     var audioRecorder: AVAudioRecorder?
     var recordingURL: URL?
     var recordingCompletion: ((URL?, Double) -> Void)?
-    var isRecodring=false
 
     override init() {
         super.init()
@@ -50,28 +49,43 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
             audioRecorder?.delegate = self
             audioRecorder?.prepareToRecord()
         } catch {
+            stopRecording(success: false)
             print("Audio recorder setup error: \(error.localizedDescription)")
         }
     }
 
-    func startRecording(completion: @escaping (URL?, Double) -> Void) {
-        recordingCompletion = completion
-
+    func startRecording() {
         if let audioRecorder = audioRecorder, !audioRecorder.isRecording {
-            let recoderstat = audioRecorder.record(forDuration: 10.0)
-            print(audioRecorder.isRecording)
-            print("url\(audioRecorder.url)")
-             // Record for 10 seconds
+
+            audioRecorder.record()
+            print("Start Recording url\(audioRecorder.url)")
         }
     }
 
+    func stopRecording(success:Bool){
+  
+        if let audioRecorder=audioRecorder, audioRecorder.isRecording{
+            audioRecorder.stop()
+            
+        }
+        if success{
+            if let fileSize=getFileSize(url: recordingURL){
+                print("StopRecording success:\(fileSize)")
+            }
+            
+        }else{
+            print("StopRecording fail")
+        }
+    }
+    
+    func playRecordAudio(){
+        
+    }
+    
     // MARK: - AVAudioRecorderDelegate
-
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        print("record finih")
         if flag {
             print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path")")
-
             if let fileSize = getFileSize(url: recordingURL) {
                 recordingCompletion?(recordingURL, fileSize)
             }
