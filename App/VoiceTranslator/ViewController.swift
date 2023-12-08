@@ -50,6 +50,7 @@ class ViewController: UIViewController {
         //10s stop
         DispatchQueue.main.asyncAfter(deadline: .now()+10.0, execute: {
             self.audioRecorder.stopRecording(success: true)
+            
         })
         //play audio
     }

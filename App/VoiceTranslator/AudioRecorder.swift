@@ -8,11 +8,13 @@
 import Foundation
 import AVFoundation
 
-class AudioRecorder: NSObject, AVAudioRecorderDelegate {
+class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
     var audioRecorder: AVAudioRecorder?
+    var audioPlayer:AVAudioPlayer?
     var recordingURL: URL?
     var recordingCompletion: ((URL?, Double) -> Void)?
+    var audioSession:AVAudioSession!
 
     override init() {
         super.init()
@@ -21,10 +23,10 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
 
     func setupAudioRecorder() {
         // Set up audio session
-        let audioSession = AVAudioSession.sharedInstance()
+        audioSession = AVAudioSession.sharedInstance()
 
         do {
-            try audioSession.setCategory(.record, mode: .default, options: [])
+            try audioSession.setCategory(.record, mode: .default, options: []) // if modecategory is playandRecord the volume will be low
             try audioSession.setActive(true)
         } catch {
             print("Audio session setup error: \(error.localizedDescription)")
@@ -69,29 +71,54 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate {
             
         }
         if success{
-            if let fileSize=getFileSize(url: recordingURL){
-                print("StopRecording success:\(fileSize)")
-            }
-            
+            print("StopRecording success saving into file")
         }else{
             print("StopRecording fail")
         }
     }
     
-    func playRecordAudio(){
-        
+    func playBack(){
+        if let playingURl=recordingURL{
+            do {
+                audioPlayer=try AVAudioPlayer(contentsOf: playingURl)
+                audioPlayer?.delegate=self
+                audioPlayer?.volume=1.0
+                audioPlayer?.play()
+                print("Start playing: \(playingURl)")
+            }catch{
+                print("Playing error \(error.localizedDescription)")
+            }
+        }
     }
     
     // MARK: - AVAudioRecorderDelegate
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
-            print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path")")
             if let fileSize = getFileSize(url: recordingURL) {
                 recordingCompletion?(recordingURL, fileSize)
+                print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path") and fileSize: \(fileSize)")
+                
+                // test for the audio file
+                do {
+                    try audioSession.setCategory(.playback)
+                    playBack()
+                }catch{
+                    print("Playing error \(error.localizedDescription)")
+                }
+               
             }
         } else {
             print("Recording failed.")
             recordingCompletion?(nil, 0.0)
+        }
+    }
+    
+    // MARK: - AVAudioPlayerDelegate
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag{
+            print("Play finished succeed")
+        }else{
+            print("Play finished unsucceed")
         }
     }
 
