@@ -18,10 +18,11 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
     override init() {
         super.init()
-        setupAudioRecorder()
     }
 
-    func setupAudioRecorder() {
+ 
+
+    func startRecording() {
         // Set up audio session
         audioSession = AVAudioSession.sharedInstance()
 
@@ -54,21 +55,18 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             stopRecording(success: false)
             print("Audio recorder setup error: \(error.localizedDescription)")
         }
-    }
-
-    func startRecording() {
+        
+        // start record
         if let audioRecorder = audioRecorder, !audioRecorder.isRecording {
-
             audioRecorder.record()
             print("Start Recording url\(audioRecorder.url)")
         }
     }
 
+    
     func stopRecording(success:Bool){
-  
         if let audioRecorder=audioRecorder, audioRecorder.isRecording{
             audioRecorder.stop()
-            
         }
         if success{
             print("StopRecording success saving into file")
@@ -77,8 +75,9 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         }
     }
     
-    func playBack(){
-        if let playingURl=recordingURL{
+    
+    func playBack(playUrl:URL?){
+        if let playingURl=playUrl{
             do {
                 audioPlayer=try AVAudioPlayer(contentsOf: playingURl)
                 audioPlayer?.delegate=self
@@ -101,7 +100,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                 // test for the audio file
                 do {
                     try audioSession.setCategory(.playback)
-                    playBack()
+                    playBack(playUrl: recordingURL)
                 }catch{
                     print("Playing error \(error.localizedDescription)")
                 }
