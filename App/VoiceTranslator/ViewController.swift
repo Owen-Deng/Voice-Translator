@@ -17,10 +17,14 @@ import UIKit
 class ViewController: UIViewController {
 
     //status enum
-    var currentStatus:UIStatus = .unListening
+    var currentStatus:UIStatus = .unListening{
+        didSet{
+            updateUIAnimation()
+        }
+    }
     
     //audiorecorder
-    let audioRecorder=AudioRecorder()
+    let audioManager=AudioManager() //
     
     enum UIStatus {
         case listening
@@ -38,33 +42,57 @@ class ViewController: UIViewController {
         functionTest()
     }
     
-    //main config before when the viewcontroller didload
-    func initConfig(){
-        
+    func updateUIAnimation(){
+        switch currentStatus {
+        case .listening:
+            print("listening animation")
+        case .unListening:
+            print("unlistenning animation")
+        case .speaking:
+            print("speak animation")
+        case .loading:
+            print("load animation")
+        }
     }
+    
     
     // devloping for functionallity test 
     func functionTest(){
+        //set closure for test
+        audioManager.recordingCompletion={[weak self] url,filesize in
+            self?.handleRecordingCompletion(url: url, fileSize: filesize)
+        }
         //start record
-        audioRecorder.startRecording()
+        audioManager.startRecording()
         //10s stop
         DispatchQueue.main.asyncAfter(deadline: .now()+10.0, execute: {
-            self.audioRecorder.stopRecording(success: true)
+            self.audioManager.stopRecording(success: true)
             
         })
         //play audio
     }
     
     
+    // function to be executed after recording is finished
+    func handleRecordingCompletion(url: URL?, fileSize: Double) {
+        // Perform actions with the recording URL and file size
+        print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
+    }
+    
     
     // start listen function
     func startListen(){
-        
+        audioManager.recordingCompletion={[weak self] url,filesize in
+            self?.handleRecordingCompletion(url: url, fileSize: filesize)
+        }
+        audioManager.startRecording()
     }
+    
+    
     
     // stop listen function22
     func stopListen(){
-        
+        audioManager.stopRecording(success: true)
     }
     
     //send user's audio and translated voice to server

@@ -10,7 +10,7 @@
 		CC0CA93A2B1FFCFB00E13D08 /* ConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA9392B1FFCFB00E13D08 /* ConnectManager.swift */; };
 		CC0CA93C2B1FFE6D00E13D08 /* SpeakButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93B2B1FFE6D00E13D08 /* SpeakButtonView.swift */; };
 		CC0CA93E2B1FFF9C00E13D08 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93D2B1FFF9C00E13D08 /* ProgressBarView.swift */; };
-		CC0CA9402B20027100E13D08 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93F2B20027100E13D08 /* AudioRecorder.swift */; };
+		CC0CA9402B20027100E13D08 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93F2B20027100E13D08 /* AudioManager.swift */; };
 		CCC2F6122B1FEF6E00F26E53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6112B1FEF6E00F26E53 /* AppDelegate.swift */; };
 		CCC2F6142B1FEF6E00F26E53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6132B1FEF6E00F26E53 /* SceneDelegate.swift */; };
 		CCC2F6162B1FEF6E00F26E53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6152B1FEF6E00F26E53 /* ViewController.swift */; };
@@ -23,7 +23,7 @@
 		CC0CA9392B1FFCFB00E13D08 /* ConnectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectManager.swift; sourceTree = "<group>"; };
 		CC0CA93B2B1FFE6D00E13D08 /* SpeakButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButtonView.swift; sourceTree = "<group>"; };
 		CC0CA93D2B1FFF9C00E13D08 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
-		CC0CA93F2B20027100E13D08 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		CC0CA93F2B20027100E13D08 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		CCC2F60E2B1FEF6E00F26E53 /* VoiceTranslator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTranslator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC2F6112B1FEF6E00F26E53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCC2F6132B1FEF6E00F26E53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 				CC0CA93B2B1FFE6D00E13D08 /* SpeakButtonView.swift */,
 				CC0CA93D2B1FFF9C00E13D08 /* ProgressBarView.swift */,
 				CCC2F6172B1FEF6F00F26E53 /* Main.storyboard */,
-				CC0CA93F2B20027100E13D08 /* AudioRecorder.swift */,
+				CC0CA93F2B20027100E13D08 /* AudioManager.swift */,
 				CC0CA9392B1FFCFB00E13D08 /* ConnectManager.swift */,
 				CCC2F61A2B1FEF7100F26E53 /* Assets.xcassets */,
 				CCC2F61C2B1FEF7100F26E53 /* LaunchScreen.storyboard */,
@@ -151,7 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC0CA93A2B1FFCFB00E13D08 /* ConnectManager.swift in Sources */,
-				CC0CA9402B20027100E13D08 /* AudioRecorder.swift in Sources */,
+				CC0CA9402B20027100E13D08 /* AudioManager.swift in Sources */,
 				CC0CA93E2B1FFF9C00E13D08 /* ProgressBarView.swift in Sources */,
 				CCC2F6162B1FEF6E00F26E53 /* ViewController.swift in Sources */,
 				CCC2F6122B1FEF6E00F26E53 /* AppDelegate.swift in Sources */,

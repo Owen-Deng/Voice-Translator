@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
+class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
     var audioRecorder: AVAudioRecorder?
     var audioPlayer:AVAudioPlayer?
@@ -95,7 +95,7 @@ class AudioRecorder: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         if flag {
             if let fileSize = getFileSize(url: recordingURL) {
                 recordingCompletion?(recordingURL, fileSize)
-                print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path") and fileSize: \(fileSize)")
+                //print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path") and fileSize: \(fileSize)")
                 
                 // test for the audio file
                 do {
