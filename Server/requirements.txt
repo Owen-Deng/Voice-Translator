@@ -1,5 +1,7 @@
+numpy
 argostranslate
-git+https://github.com/coqui-ai/TTS.git
 pymongo
+torch
 fastapi
 uvicorn[standard]
+git+https://github.com/coqui-ai/TTS.git

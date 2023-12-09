@@ -11,7 +11,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from generator import generate, get_conditioning_latents, load as generator_load
 from translator import translate, get_languages, load as translator_load
-from langdetector import detect, load as langdetector_load
+#from langdetector import detect, load as langdetector_load
 
 app = FastAPI()
 
