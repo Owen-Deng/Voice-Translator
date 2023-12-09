@@ -7,18 +7,106 @@
 
 import Foundation
 import AVFoundation
+import Speech
+
+enum Lanague:String{
+    case EN="en-US"
+    case CN="zh-CN"
+}
 
 class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
     var audioRecorder: AVAudioRecorder?
     var audioPlayer:AVAudioPlayer?
     var recordingURL: URL?
-    var recordingCompletion: ((URL?, Double) -> Void)?
+    var recordingCompletion: ((URL?, Double) -> Void)?  // using for callback function
+    var playingCompletion:((URL?,Bool) -> Void)? //using for callback function
     var audioSession:AVAudioSession!
 
+    var speechRecognizer:SFSpeechRecognizer?
+    var recognitionRequest:SFSpeechAudioBufferRecognitionRequest?
+    var recognitionTask:SFSpeechRecognitionTask?
+    var speechText:String?
+    let audioEngine = AVAudioEngine() //must init before session out of the function
+ 
+    
     override init() {
         super.init()
+        setupSpeechRecognition()
     }
+    
+    // set up the speech recognition
+    func setupSpeechRecognition(){
+        speechRecognizer=SFSpeechRecognizer()
+        SFSpeechRecognizer.requestAuthorization{authStatus in
+            if authStatus == .authorized {
+                print("Speech recgonition is authorized ")
+            }else{
+                print("Speech recgonition is not authorized")
+            }
+        }
+    }
+    
+    //start speechto text
+    func startSpeechToText(lanague:String){
+        speechRecognizer=SFSpeechRecognizer(locale: Locale(identifier: "en-US")) 
+        
+        guard let recognizer = speechRecognizer, recognizer.isAvailable else {
+                    print("Speech recognition is not available.")
+                    return
+        }
+
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+        guard let recognitionRequest = recognitionRequest else {
+                    print("Recognition request is nil.")
+            return
+        }
+
+        do {
+                    // Set up audio session for speech recognition
+            let session=AVAudioSession.sharedInstance()
+            try session.setCategory(.record, mode: .default, options: [])
+            try session.setActive(true,options: .notifyOthersOnDeactivation)
+
+                    // Set up recognition task
+            recognitionTask = recognizer.recognitionTask(with: recognitionRequest) { [unowned self] result, error in
+                if let result = result {
+                            // Extract the recognized text from the result
+                    let recognizedText = result.bestTranscription.formattedString
+                
+                   // print("Recognized Text: \(recognizedText)")
+                    self.speechText=recognizedText
+                } else if let error = error {
+                    print("Speech recognition error: \(error.localizedDescription)")
+                }
+            }
+
+                    // Start the audio engine
+            audioEngine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: audioEngine.inputNode.outputFormat(forBus: 0)) {
+                (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+                self.recognitionRequest?.append(buffer)
+            }
+            audioEngine.prepare()
+            do{
+                try audioEngine.start()
+            }
+            catch {
+                fatalError("Audio engine could not start")
+            }
+
+        } catch {
+                print("Error setting up speech recognition: \(error.localizedDescription)")
+        }
+    }
+    
+    // Function to stop speech-to-text recognition
+    func stopSpeechToText() {
+        audioRecorder?.stop()
+        recognitionRequest?.endAudio()
+        audioEngine.inputNode.removeTap(onBus: 0)
+    }
+    
+    
 
  
 
@@ -96,14 +184,6 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             if let fileSize = getFileSize(url: recordingURL) {
                 recordingCompletion?(recordingURL, fileSize)
                 //print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path") and fileSize: \(fileSize)")
-                
-                // test for the audio file
-                do {
-                    try audioSession.setCategory(.playback)
-                    playBack(playUrl: recordingURL)
-                }catch{
-                    print("Playing error \(error.localizedDescription)")
-                }
                
             }
         } else {
@@ -116,8 +196,10 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if flag{
             print("Play finished succeed")
+            playingCompletion?(recordingURL,flag)
         }else{
             print("Play finished unsucceed")
+            playingCompletion?(recordingURL,flag)
         }
     }
 

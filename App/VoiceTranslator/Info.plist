@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Voice Translator need access SpeechRecogition Function</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Voice Translator need access Microphone</string>
 	<key>NSLocalNetworkUsageDescription</key>

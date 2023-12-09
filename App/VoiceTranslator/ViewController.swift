@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     //audiorecorder
     let audioManager=AudioManager() //
     
+    
     enum UIStatus {
         case listening
         case unListening
@@ -40,6 +41,7 @@ class ViewController: UIViewController {
         
         //call the functiontest
         functionTest()
+      
     }
     
     func updateUIAnimation(){
@@ -58,27 +60,16 @@ class ViewController: UIViewController {
     
     // devloping for functionallity test 
     func functionTest(){
-        //set closure for test
-        audioManager.recordingCompletion={[weak self] url,filesize in
-            self?.handleRecordingCompletion(url: url, fileSize: filesize)
-        }
-        //start record
-        audioManager.startRecording()
-        //10s stop
+        startListen()
+        audioManager.startSpeechToText(lanague: Lanague.EN.rawValue)
         DispatchQueue.main.asyncAfter(deadline: .now()+10.0, execute: {
             self.audioManager.stopRecording(success: true)
-            
+            self.audioManager.stopSpeechToText()
         })
+        
         //play audio
     }
-    
-    
-    // function to be executed after recording is finished
-    func handleRecordingCompletion(url: URL?, fileSize: Double) {
-        // Perform actions with the recording URL and file size
-        print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
-    }
-    
+  
     
     // start listen function
     func startListen(){
@@ -88,11 +79,17 @@ class ViewController: UIViewController {
         audioManager.startRecording()
     }
     
+    // function to be executed after recording is finished
+    func handleRecordingCompletion(url: URL?, fileSize: Double) {
+        print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
+        print("Finaly the contexnt about the \(audioManager.speechText ?? "")")
+    }
     
     
     // stop listen function22
     func stopListen(){
         audioManager.stopRecording(success: true)
+        audioManager.stopSpeechToText()
     }
     
     //send user's audio and translated voice to server
@@ -101,11 +98,17 @@ class ViewController: UIViewController {
     }
     
     // start play the audio from server
-    func playSpeaking(){
-        
+    func playSpeaking(audioUrl:URL){
+        audioManager.playingCompletion={[weak self] url,succed in
+            self?.handlePlayingCompletion(url: url, succeed: succed)
+        }
+        audioManager.playBack(playUrl: audioUrl)
     }
     
-    //
+    //function to be excuted after playing is finished
+    func handlePlayingCompletion(url:URL?,succeed:Bool){
+        print("Playing completed, File URL:\(url?.path ?? "Unknown path"),status:\(succeed)")
+    }
     
     
     

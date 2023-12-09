@@ -72,6 +72,8 @@ class ConnectManager: NSObject, URLSessionDelegate{
         task.resume()
     }
     
+    
+    
 }
 
 enum NetworkError: Error {
