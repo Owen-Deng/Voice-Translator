@@ -1,6 +1,7 @@
 
 import os
 import io
+import tempfile
 from threading import Thread
 import numpy as np
 import uvicorn
@@ -33,6 +34,22 @@ async def Generate(text, audio_id, src_lang, tar_lang):
         return
     
     gpt_cond_latent, speaker_embedding = get_conditioning_latents(audio)
+    output = io.BytesIO()
+    generate(translatedText, tar_lang, gpt_cond_latent, speaker_embedding, output)
+    return StreamingResponse(output, media_type="audio/wav")
+
+
+@app.post("/EZGenerate")
+async def EZGenerate(request: Request, text, src_lang, tar_lang):
+    '''Save data point and class label to database
+    '''
+    data = await request.body()
+    audio_path = os.path.join(tempfile.gettempdir(), 'tmp.wav')
+    translatedText, res = translate(text, src_lang, tar_lang)
+    if not res:
+        return
+    
+    gpt_cond_latent, speaker_embedding = get_conditioning_latents(audio_path)
     output = io.BytesIO()
     generate(translatedText, tar_lang, gpt_cond_latent, speaker_embedding, output)
     return StreamingResponse(output, media_type="audio/wav")
