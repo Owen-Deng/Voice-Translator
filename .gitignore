@@ -3,3 +3,4 @@ result.wav
 Server/langdetect_model
 audio_cache
 *.pyc
+*.wav

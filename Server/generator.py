@@ -70,6 +70,7 @@ def generate(text, language, gpt_cond_latent, speaker_embedding, output) -> str:
         wav = torch.reshape(wav, (1,-1)).cpu()
         
         torchaudio.save(output, wav, 24000, format = "wav")
+        output.seek(0)
         
     return ""
 
