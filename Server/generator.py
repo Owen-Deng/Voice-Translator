@@ -91,7 +91,8 @@ def load():
     config.load_json("Server/XTTS-v2/config.json")
     model = Xtts.init_from_config(config)
     model.load_checkpoint(config, checkpoint_dir="Server/XTTS-v2/", eval=True)
-    model.cuda()
+    if torch.cuda.is_available():
+        model.cuda()
 
     conditioning_latents_settings = {
         "gpt_cond_len": config.gpt_cond_len,
