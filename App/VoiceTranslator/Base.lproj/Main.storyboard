@@ -60,6 +60,7 @@
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="KQU-Bw-9Eh"/>
+                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="NLi-O7-6Vt"/>
                                             <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="QWg-Xw-qUG"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
@@ -80,7 +81,6 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.91764705882352937" green="0.8666666666666667" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="Foz-hh-VTb" firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="NLi-O7-6Vt"/>
                                     <constraint firstItem="0lH-5T-VLq" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="WD3-Dj-PmP"/>
                                     <constraint firstItem="Foz-hh-VTb" firstAttribute="centerY" secondItem="b3B-BG-NG1" secondAttribute="centerY" id="esB-MS-CT7"/>
                                     <constraint firstItem="Foz-hh-VTb" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="h3H-cx-TiO"/>
@@ -102,6 +102,12 @@
                             <constraint firstAttribute="bottom" secondItem="1ZW-pe-REB" secondAttribute="bottom" id="qi0-Kh-oCd"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="myButtonView" destination="jmA-ew-AZ8" id="GDe-e4-O4t"/>
+                        <outlet property="myLabel" destination="c4t-5o-OAk" id="5lS-7g-rbz"/>
+                        <outlet property="yourButtonView" destination="Foz-hh-VTb" id="hGl-Gf-Ymz"/>
+                        <outlet property="yourLabel" destination="0lH-5T-VLq" id="Ndu-bR-KqD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

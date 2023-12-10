@@ -9,10 +9,13 @@ import Foundation
 import AVFoundation
 import Speech
 
-enum Lanague:String{
-    case EN="en-US"
-    case CN="zh-CN"
-}
+
+
+let LANGUAGENAMES:[String]=["English","Mandarin"]
+let LANGUAGEIOS:[String]=["en-US","zh-CN"]
+let LANGUAGESEVER:[String]=["en","zh"]
+
+
 
 class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
@@ -49,7 +52,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     
     //start speechto text
     func startSpeechToText(lanague:String){
-        speechRecognizer=SFSpeechRecognizer(locale: Locale(identifier: "en-US")) 
+        speechRecognizer=SFSpeechRecognizer(locale: Locale(identifier: lanague)) 
         
         guard let recognizer = speechRecognizer, recognizer.isAvailable else {
                     print("Speech recognition is not available.")

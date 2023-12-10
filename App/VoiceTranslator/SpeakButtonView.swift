@@ -3,35 +3,40 @@
 //  VoiceTranslator
 //
 //  Created by RongWei Ji on 12/5/23.
-//
+//  if tapgesture be called instead of the touchesEnded called , because of duplicate
 
 import Foundation
 import UIKit
+
+enum ButtonViewStatus { //for controll out of uiview
+    case normal // no any animation
+    case loading // rotating the ring
+    case recording //circl changeble
+    case playing //after loading
+}
+
+
+protocol SpeakButtonViewDelegate: AnyObject {
+    func buttonViewTapped(_ speakButtonView: SpeakButtonView)
+}
 
 @IBDesignable
 class SpeakButtonView:UIView{
     // MARK: - Properties
 
-        // Set the color of the ring in the storyboard
+    // Set the values of the ring in the storyboard
     @IBInspectable var ringColor: UIColor = Colors.primaryContainer {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
+        didSet {setNeedsDisplay()}}
     
     @IBInspectable var gapAngle: CGFloat = 30.0 {
-          didSet {
-              setNeedsDisplay()
-          }
-    }
+          didSet {setNeedsDisplay()}}
     
     @IBInspectable var circleColor: UIColor = Colors.onPrimary {
-          didSet {
-              setNeedsDisplay()
-          }
-    }
+          didSet {setNeedsDisplay()}}
     
-
+    // status for update the button ui animation.
+    var status:ButtonViewStatus = .normal {
+        didSet {updateUIForStatus()}}
         // MARK: - Initialization
 
     required init?(coder aDecoder: NSCoder) {
@@ -68,8 +73,27 @@ class SpeakButtonView:UIView{
         ringPath.stroke()
     }
         
+    // normal default . normal - speak . speak - loading. loading - speak, speak - normal.
+    func updateUIForStatus(){
+        switch status {
+        case .normal:
+                   // Update UI for normal state
+                   print("Normal button")
+                   // ... (additional updates)
+        case .loading:
+                   // Update UI for loading state
+            print("loading button")
+                   // ... (additional updates)
+        case .recording:
+                   // Update UI for recording state
+            print("recording button")
+                   // ... (additional updates)
+        case .playing:
+            print("playing buttong")
+        }
+    }
 
-        // MARK: - Public Method
+        // MARK: - Rotating animation Method
     private var ringLayer: CAShapeLayer = CAShapeLayer()
     
     private var isRotating = false
@@ -87,43 +111,47 @@ class SpeakButtonView:UIView{
     
     func stopRotationAnimation() {
             // Stop the rotation animation
-        layer.removeAnimation(forKey: "rotationAnimation")
-        isRotating = false
-
+        if isRotating{
+            layer.removeAnimation(forKey: "rotationAnimation")
+            isRotating = false
+        }
             // Optionally, perform any other cleanup or adjustments after stopping the rotation
     }
     
     
     // MARK: - Touch Gesture Handler
     private var originalRingColor: UIColor!
+    weak var delegate: SpeakButtonViewDelegate?
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             super.touchesBegan(touches, with: event)
             // Touch down, save the original ring color and change transparency
-        originalRingColor = ringColor
-        ringColor = ringColor.withAlphaComponent(0.5)
+        if status == .normal{
+            originalRingColor = ringColor
+            ringColor = ringColor.withAlphaComponent(0.5)
+        }
+     
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
             super.touchesEnded(touches, with: event)
             // Touch up, restore the original ring color
-        ringColor = originalRingColor
+      // only call when normal, recording
+        if (status == .normal || status == .recording){
+            ringColor = originalRingColor
+            delegate?.buttonViewTapped(self)
+        }
+           
+        
     }
     
     
-    // MARK: - Changeable Circle Animation
+    // MARK: -  Circle Animation
     // Property to control circle visibility
-     var isCircleVisible: Bool = false {
-         didSet {
-             if isCircleVisible {
-                 showChangeableCircle()
-             } else {
-                 hideChangeableCircle()
-             }
-         }
-    }
     
     private var circleLayer: CALayer!
+    var isCircling=false
     private func showChangeableCircle() {
+        isCircling=true
         // Use half of the smaller dimension as the radius
         let smallerDimension = min(bounds.width, bounds.height)
         let ringRadius = smallerDimension / 2.0
@@ -151,6 +179,7 @@ class SpeakButtonView:UIView{
     }
 
     private func hideChangeableCircle() {
+        if isCircling{
            // Animate the circle's disappearance
         let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
         scaleAnimation.fromValue = 1.0
@@ -158,6 +187,8 @@ class SpeakButtonView:UIView{
         scaleAnimation.duration = 0.3
        // scaleAnimation.delegate = self
         circleLayer.add(scaleAnimation, forKey: "circleScaleAnimation")
+            isCircling=false
+        }
     }
     
     
