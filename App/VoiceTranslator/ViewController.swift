@@ -14,6 +14,13 @@
 
 import UIKit
 
+struct Colors {
+    static let primary=UIColor(red: 103/255.0, green: 80/255.0, blue: 164/255.0, alpha: 1.0)
+    static let primaryContainer=UIColor(red: 234/255.0, green: 221/255.0, blue: 255/255.0, alpha: 1.0)
+    static let onPrimary=UIColor.white
+    static let onPrimaryContainer=UIColor(red: 23/255.0, green: 0/255.0, blue: 93/255.0, alpha: 1.0)
+}
+
 class ViewController: UIViewController {
 
     //status enum
@@ -39,8 +46,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        //call the functiontest
-        functionTest()
+
       
     }
     
