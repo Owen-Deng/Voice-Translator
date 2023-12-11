@@ -34,6 +34,13 @@ class SpeakButtonView:UIView{
     @IBInspectable var circleColor: UIColor = Colors.onPrimary {
           didSet {setNeedsDisplay()}}
     
+    // speaking and listenning 1 to 2/3
+    @IBInspectable var circleScaleRate: CGFloat = 2/3 {
+          didSet {setNeedsDisplay()}}
+    // when speaking and listenning true
+    @IBInspectable var isCircleShow: Bool = false {
+          didSet {setNeedsDisplay()}}
+    
     // status for update the button ui animation.
     var status:ButtonViewStatus = .normal {
         didSet {updateUIForStatus()}}
@@ -62,7 +69,7 @@ class SpeakButtonView:UIView{
         // MARK: - Private Methods
     override func draw(_ rect: CGRect) {
         let center = CGPoint(x: rect.midX, y: rect.midY)
-        let radius = min(rect.width, rect.height) / 2.5
+        let radius = min(rect.width, rect.height) / 3
         let startAngle: CGFloat = -CGFloat.pi / 2
         let endAngle: CGFloat = startAngle + 2 * CGFloat.pi - gapAngle * CGFloat.pi / 180.0
 
@@ -71,6 +78,21 @@ class SpeakButtonView:UIView{
         ringColor.setStroke()
         ringPath.lineWidth = 10.0
         ringPath.stroke()
+        
+        if isCircleShow{
+        //Draw the circle animation
+        // Get the context for drawing
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+
+               // Set the circle's properties (color, size, position)
+        let circleSize = CGSize(width: bounds.width * circleScaleRate, height: bounds.height * circleScaleRate)
+        let circlePosition = CGPoint(x: bounds.midX - circleSize.width / 2, y: bounds.midY - circleSize.height / 2)
+        
+               // Draw the circle
+        context.setFillColor(circleColor.cgColor)
+        context.setAlpha(0.5)
+        context.fillEllipse(in: CGRect(origin: circlePosition, size: circleSize))
+        }
     }
         
     // normal default . normal - speak . speak - loading. loading - speak, speak - normal.
@@ -144,52 +166,6 @@ class SpeakButtonView:UIView{
         
     }
     
-    
-    // MARK: -  Circle Animation
-    // Property to control circle visibility
-    
-    private var circleLayer: CALayer!
-    var isCircling=false
-    private func showChangeableCircle() {
-        isCircling=true
-        // Use half of the smaller dimension as the radius
-        let smallerDimension = min(bounds.width, bounds.height)
-        let ringRadius = smallerDimension / 2.0
-           // Create the circle layer
-        circleLayer = CALayer()
-        circleLayer.bounds = CGRect(x: 0, y: 0, width: 2 * ringRadius, height: 2 * ringRadius)
-        circleLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
-        circleLayer.cornerRadius = ringRadius
-        circleLayer.backgroundColor = circleColor.cgColor
-
-           // Add the circle layer to the view's layer
-        // Insert the circle layer below the ring layer
-        if let ringLayer = layer.sublayers?.first {
-            layer.insertSublayer(circleLayer, below: ringLayer)
-        } else {
-            layer.addSublayer(circleLayer)
-        }
-
-           // Animate the circle's radius
-        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnimation.fromValue = 0.8
-        scaleAnimation.toValue = 1.2
-        scaleAnimation.duration = 0.3
-        circleLayer.add(scaleAnimation, forKey: "circleScaleAnimation")
-    }
-
-    private func hideChangeableCircle() {
-        if isCircling{
-           // Animate the circle's disappearance
-        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
-        scaleAnimation.fromValue = 1.0
-        scaleAnimation.toValue = 0.0
-        scaleAnimation.duration = 0.3
-       // scaleAnimation.delegate = self
-        circleLayer.add(scaleAnimation, forKey: "circleScaleAnimation")
-            isCircling=false
-        }
-    }
     
     
     

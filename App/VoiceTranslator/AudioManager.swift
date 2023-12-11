@@ -32,6 +32,8 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     var speechText:String?
     let audioEngine = AVAudioEngine() //must init before session out of the function
  
+    var buttonView:SpeakButtonView?
+    var audioPower:Float=0.0
     
     override init() {
         super.init()
@@ -78,6 +80,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                     let recognizedText = result.bestTranscription.formattedString
                 
                    // print("Recognized Text: \(recognizedText)")
+                    audioRecorder!.updateMeters()
+                    audioPower=audioRecorder?.peakPower(forChannel: 0) ?? 0.0
+                    print("audioPower: \(audioPower)")
                     self.speechText=recognizedText
                 } else if let error = error {
                     print("Speech recognition error: \(error.localizedDescription)")
@@ -141,6 +146,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         do {
             audioRecorder = try AVAudioRecorder(url: recordingURL!, settings: audioSettings)
             audioRecorder?.delegate = self
+            audioRecorder?.isMeteringEnabled = true
             audioRecorder?.prepareToRecord()
         } catch {
             stopRecording(success: false)

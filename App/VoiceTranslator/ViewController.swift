@@ -176,7 +176,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                 connectManager.sendAudioPostRequest(srcLan: srcLan, tarLan: tarLan, text: speechText, audioData: audioData){result in
                     switch result {
                     case .success(let data):
-                        self.activeStatus = .noActive
+                       
+               
                         print("Success! Data received, Data: \(Date()) Date:\(data)")
                         
                         guard let fileURL = self.saveDataToFile(data, withExtension: "wav") else {
@@ -185,6 +186,11 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                         }
                         self.playSpeaking(audioUrl: fileURL)
                     case .failure(let error):
+                        if self.activeStatus == .myActive{
+                            self.myButtonView.status = .normal
+                        }else if self.activeStatus == .yourActive{
+                            self.yourButtonView.status = .normal
+                        }
                         self.activeStatus = .noActive
                         print("Error: \(error.localizedDescription)")
                     }

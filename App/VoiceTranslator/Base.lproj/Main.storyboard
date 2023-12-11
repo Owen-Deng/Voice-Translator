@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="426" width="393" height="426"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jmA-ew-AZ8" customClass="SpeakButtonView" customModule="VoiceTranslator" customModuleProvider="target">
-                                        <rect key="frame" x="125.66666666666669" y="142" width="142" height="142"/>
+                                        <rect key="frame" x="111.33333333333333" y="127.66666666666661" width="170.33333333333337" height="170.66666666666657"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
@@ -48,14 +48,14 @@
                                     <constraint firstItem="jmA-ew-AZ8" firstAttribute="centerX" secondItem="1ZW-pe-REB" secondAttribute="centerX" id="Zma-to-RaZ"/>
                                     <constraint firstItem="jmA-ew-AZ8" firstAttribute="centerY" secondItem="1ZW-pe-REB" secondAttribute="centerY" id="d5g-Ob-wOO"/>
                                     <constraint firstItem="c4t-5o-OAk" firstAttribute="centerX" secondItem="1ZW-pe-REB" secondAttribute="centerX" id="fqa-Hs-yR1"/>
-                                    <constraint firstItem="jmA-ew-AZ8" firstAttribute="width" secondItem="1ZW-pe-REB" secondAttribute="height" multiplier="1:3" id="ikj-dq-nYm"/>
+                                    <constraint firstItem="jmA-ew-AZ8" firstAttribute="width" secondItem="1ZW-pe-REB" secondAttribute="height" multiplier="1:2.5" id="ikj-dq-nYm"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-BG-NG1">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="426"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Foz-hh-VTb" customClass="SpeakButtonView" customModule="VoiceTranslator" customModuleProvider="target">
-                                        <rect key="frame" x="125.66666666666669" y="142" width="142" height="142"/>
+                                        <rect key="frame" x="111.33333333333333" y="127.66666666666667" width="170.33333333333337" height="170.66666666666657"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
