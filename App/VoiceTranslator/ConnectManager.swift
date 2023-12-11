@@ -15,8 +15,8 @@ class ConnectManager: NSObject, URLSessionDelegate{
     lazy var session: URLSession = {
         let sessionConfig = URLSessionConfiguration.ephemeral
         
-        sessionConfig.timeoutIntervalForRequest = 5.0
-        sessionConfig.timeoutIntervalForResource = 8.0
+        sessionConfig.timeoutIntervalForRequest = 10.0
+        sessionConfig.timeoutIntervalForResource = 20.0
         sessionConfig.httpMaximumConnectionsPerHost = 1
         
         return URLSession(configuration: sessionConfig,
@@ -105,11 +105,6 @@ class ConnectManager: NSObject, URLSessionDelegate{
                }
         }
 
-        // Add progress tracking
-        let progressObserver = task.progress.observe(\.fractionCompleted) { progress, _ in
-                print("Upload progress: \(progress.fractionCompleted * 100)%")
-        }
-        task.addObserver(progressObserver, forKeyPath: "progress", options: .new, context: nil)
 
         task.resume()
     }

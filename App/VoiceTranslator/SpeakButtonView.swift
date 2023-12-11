@@ -36,10 +36,11 @@ class SpeakButtonView:UIView{
     
     // speaking and listenning 1 to 2/3
     @IBInspectable var circleScaleRate: CGFloat = 2/3 {
-          didSet {setNeedsDisplay()}}
-    // when speaking and listenning true
-    @IBInspectable var isCircleShow: Bool = false {
-          didSet {setNeedsDisplay()}}
+        didSet {
+            if (status == .playing || status == .recording){
+                setNeedsDisplay()
+            }
+        }}
     
     // status for update the button ui animation.
     var status:ButtonViewStatus = .normal {
@@ -79,7 +80,7 @@ class SpeakButtonView:UIView{
         ringPath.lineWidth = 10.0
         ringPath.stroke()
         
-        if isCircleShow{
+        if (self.status == .recording || self.status == .playing) {
         //Draw the circle animation
         // Get the context for drawing
         guard let context = UIGraphicsGetCurrentContext() else { return }
@@ -162,8 +163,6 @@ class SpeakButtonView:UIView{
             ringColor = originalRingColor
             delegate?.buttonViewTapped(self)
         }
-           
-        
     }
     
     

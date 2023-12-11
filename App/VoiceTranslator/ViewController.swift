@@ -13,6 +13,7 @@
 
 
 import UIKit
+import AVFAudio
 
 struct Colors {
     static let primary=UIColor(red: 103/255.0, green: 80/255.0, blue: 164/255.0, alpha: 1.0) //6750A4
@@ -23,7 +24,7 @@ struct Colors {
 
 
 
-class ViewController: UIViewController ,SpeakButtonViewDelegate {
+class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDelegate {
    
     // set active
     //delegae function when touch the button
@@ -179,6 +180,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                        
                
                         print("Success! Data received, Data: \(Date()) Date:\(data)")
+//                        self.playData(audioData: data)
                         
                         guard let fileURL = self.saveDataToFile(data, withExtension: "wav") else {
                                  print("Error saving data to file")
@@ -214,6 +216,27 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                 return nil
             }
     }
+    
+    
+    var audioPlayer: AVAudioPlayer?
+    func playData(audioData:Data){
+        do {
+            // Set up and activate the audio session
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+                   // Create an AVAudioPlayer with the downloaded audio data
+            audioPlayer = try AVAudioPlayer(data: audioData)
+            audioPlayer?.delegate = self
+            audioPlayer?.prepareToPlay()
+
+                   // Start playing the audio
+            audioPlayer?.play()
+        } catch let error {
+            print("Error playing audio: \(error.localizedDescription)")
+        }
+    }
+    
     
     
     // start play the audio from server

@@ -170,15 +170,25 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         }else{
             print("StopRecording fail")
         }
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("Failed to deactivate audio session: \(error.localizedDescription)")
+        }
     }
     
     
     func playBack(playUrl:URL?){
         if let playingURl=playUrl{
             do {
+                let session=AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .default, options: [])
+                try session.setActive(true)
                 audioPlayer=try AVAudioPlayer(contentsOf: playingURl)
                 audioPlayer?.delegate=self
                 audioPlayer?.volume=1.0
+                audioPlayer?.prepareToPlay()
                 audioPlayer?.play()
                 print("Start playing: \(playingURl)")
             }catch{
@@ -192,13 +202,12 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         if flag {
             if let fileSize = getFileSize(url: recordingURL) {
                 recordingCompletion?(recordingURL, fileSize)
-                //print("Recording successful. File saved at: \(recordingURL?.path ?? "Unknown path") and fileSize: \(fileSize)")
-               
             }
         } else {
             print("Recording failed.")
             recordingCompletion?(nil, 0.0)
         }
+        
     }
     
     // MARK: - AVAudioPlayerDelegate
