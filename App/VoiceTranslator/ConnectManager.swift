@@ -74,51 +74,17 @@ class ConnectManager: NSObject, URLSessionDelegate{
     
     
     func sendAudioPostRequest(srcLan:String, tarLan:String,text: String, audioData: Data, completion: @escaping (Result<Data, Error>) -> Void) {
-           let urlString = "\(SERVER_URL)/EZGenerate"
-
-           guard let url = URL(string: urlString) else {
-               completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
-               return
-           }
-           var request = URLRequest(url: url)
-           request.httpMethod = "POST"
-
-           // Set the request parameters
-           let params = [
-               "text": text,
-               "src_lang": srcLan,
-               "tar_lang": tarLan,
-               "debug": "False"
-           ]
-
-           request.httpBody = try? JSONSerialization.data(withJSONObject: params)
-
-           // Set up the request headers
-           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-           let boundary = "Boundary-\(UUID().uuidString)"
-           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-
-           var body = Data()
-
-           // Append text data
-            
-        body.append(Data("--\(boundary)\r\n".utf8)) // only append the data type
-        body.append(Data("Content-Disposition: form-data; name=\"text\"\r\n\r\n".utf8))
-        body.append(text.data(using: .utf8)!)
-        body.append(Data("\r\n".utf8))
-
-           // Append audio data
-        body.append(Data("--\(boundary)\r\n".utf8))
-        body.append(Data("Content-Disposition: form-data; name=\"audio\"; filename=\"myAudioFile.wav\"\r\n".utf8))
-        body.append(Data("Content-Type: audio/mpeg\r\n\r\n".utf8))
-        body.append(audioData)
-        body.append(Data("\r\n".utf8))
-
-           // Close the body with the boundary
-        body.append(Data("--\(boundary)--\r\n".utf8))
-
-        request.httpBody = body
+ 
+//{host}/EZGenerate?text={text}&src_lang=en&tar_lang=zh&debug=False
+        let urlString = "\(baseURL)/EZGenerate?text=\(text)&src_lang=\(srcLan)&tar_lang=\(tarLan)&debug=False"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("audio/wav", forHTTPHeaderField: "Content-Type")
+        request.httpBody=audioData
 
         let task = session.dataTask(with: request) { data, response, error in
                if let error = error {
@@ -130,6 +96,7 @@ class ConnectManager: NSObject, URLSessionDelegate{
                if let data = data {
                    if let httpResponse = response as? HTTPURLResponse {
                        if httpResponse.statusCode == 200 {
+                           print("recevied success \(data)")
                            completion(.success(data))
                        } else {
                            completion(.failure(NSError(domain: "HTTP Response Code: \(httpResponse.statusCode)", code: httpResponse.statusCode, userInfo: nil)))
