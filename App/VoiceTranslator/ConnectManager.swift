@@ -7,7 +7,7 @@
 
 import Foundation
 
-let SERVER_URL = "http://192.168.50.247:8080" // change this for your server name!!!
+let SERVER_URL = "http://192.168.50.219:8080" // change this for your server name!!!
 
 
 class ConnectManager: NSObject, URLSessionDelegate{

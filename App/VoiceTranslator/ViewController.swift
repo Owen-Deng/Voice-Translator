@@ -138,8 +138,10 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
     func handleRecordingCompletion(url: URL?, fileSize: Double) {
         print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
         print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
-       
-        
+        if let speechText = audioManager.speechText{
+            sendSession(speechText: speechText, audioFileUrl: url)
+        }
+      
     }
     
     
@@ -176,6 +178,12 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                     case .success(let data):
                         self.activeStatus = .noActive
                         print("Success! Data received, Data: \(Date()) Date:\(data)")
+                        
+                        guard let fileURL = self.saveDataToFile(data, withExtension: "wav") else {
+                                 print("Error saving data to file")
+                                 return
+                        }
+                        self.playSpeaking(audioUrl: fileURL)
                     case .failure(let error):
                         self.activeStatus = .noActive
                         print("Error: \(error.localizedDescription)")
@@ -184,11 +192,23 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
             }catch {
                 print(" not able to upload data\(error)")
             }
-          
         }
-       
-        
     }
+    
+    
+    private func saveDataToFile(_ data: Data, withExtension fileExtension: String) -> URL? {
+            let tempDirectoryURL = FileManager.default.temporaryDirectory
+            let tempFileURL = tempDirectoryURL.appendingPathComponent("tempAudioFile.\(fileExtension)")
+
+            do {
+                try data.write(to: tempFileURL)
+                return tempFileURL
+            } catch {
+                print("Error saving data to file: \(error)")
+                return nil
+            }
+    }
+    
     
     // start play the audio from server
     func playSpeaking(audioUrl:URL){

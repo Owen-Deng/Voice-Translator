@@ -82,14 +82,14 @@ class SpeakButtonView:UIView{
                    // ... (additional updates)
         case .loading:
                    // Update UI for loading state
-            print("loading button")
+            print("Loading button")
                    // ... (additional updates)
         case .recording:
                    // Update UI for recording state
-            print("recording button")
+            print("Recording button")
                    // ... (additional updates)
         case .playing:
-            print("playing buttong")
+            print("Playing buttong")
         }
     }
 
