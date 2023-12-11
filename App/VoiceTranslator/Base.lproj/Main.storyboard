@@ -41,14 +41,35 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llq-9H-rAf" customClass="ProgressBarView" customModule="VoiceTranslator" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="30"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="g7B-ti-M4P"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="progressValue">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
+                                                <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                <real key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.40392156862745099" green="0.31372549019607843" blue="0.64313725490196072" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="llq-9H-rAf" firstAttribute="top" secondItem="1ZW-pe-REB" secondAttribute="top" id="Hng-nl-coc"/>
+                                    <constraint firstItem="llq-9H-rAf" firstAttribute="centerX" secondItem="1ZW-pe-REB" secondAttribute="centerX" id="LP4-pB-8PA"/>
                                     <constraint firstAttribute="bottom" secondItem="c4t-5o-OAk" secondAttribute="bottom" constant="45" id="Oyf-vP-jLh"/>
                                     <constraint firstItem="jmA-ew-AZ8" firstAttribute="centerX" secondItem="1ZW-pe-REB" secondAttribute="centerX" id="Zma-to-RaZ"/>
                                     <constraint firstItem="jmA-ew-AZ8" firstAttribute="centerY" secondItem="1ZW-pe-REB" secondAttribute="centerY" id="d5g-Ob-wOO"/>
                                     <constraint firstItem="c4t-5o-OAk" firstAttribute="centerX" secondItem="1ZW-pe-REB" secondAttribute="centerX" id="fqa-Hs-yR1"/>
                                     <constraint firstItem="jmA-ew-AZ8" firstAttribute="width" secondItem="1ZW-pe-REB" secondAttribute="height" multiplier="1:2.5" id="ikj-dq-nYm"/>
+                                    <constraint firstItem="llq-9H-rAf" firstAttribute="width" secondItem="1ZW-pe-REB" secondAttribute="width" id="uoa-Kb-maR"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-BG-NG1">
