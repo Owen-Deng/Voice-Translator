@@ -106,12 +106,14 @@ class SpeakButtonView:UIView{
         case .loading:
                    // Update UI for loading state
             print("Loading button")
+            performRotationAnimation()
                    // ... (additional updates)
         case .recording:
                    // Update UI for recording state
             print("Recording button")
                    // ... (additional updates)
         case .playing:
+            stopRotationAnimation()
             print("Playing buttong")
         }
     }
@@ -135,9 +137,14 @@ class SpeakButtonView:UIView{
     func stopRotationAnimation() {
             // Stop the rotation animation
         if isRotating{
-            layer.removeAnimation(forKey: "rotationAnimation")
-            isRotating = false
+        DispatchQueue.main.async {
+           
+            self.layer.removeAnimation(forKey: "rotationAnimation")
+            self.isRotating = false
+        
         }
+        }
+       
             // Optionally, perform any other cleanup or adjustments after stopping the rotation
     }
     
