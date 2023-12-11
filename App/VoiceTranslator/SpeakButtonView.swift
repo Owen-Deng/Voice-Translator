@@ -125,7 +125,7 @@ class SpeakButtonView:UIView{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
             super.touchesBegan(touches, with: event)
             // Touch down, save the original ring color and change transparency
-        if status == .normal{
+        if (status == .normal || status == .recording){
             originalRingColor = ringColor
             ringColor = ringColor.withAlphaComponent(0.5)
         }

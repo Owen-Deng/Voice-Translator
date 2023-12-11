@@ -121,16 +121,19 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
                 print("yourButtonView activate")
                 listenLang=getLanguageiOSStr(yourLanguage)
             }
+            
             audioManager.recordingCompletion={[weak self] url,filesize in
                 self?.handleRecordingCompletion(url: url, fileSize: filesize)
             }
-            audioManager.startRecording()
-            audioManager.startSpeechToText(lanague: listenLang)
-            button.status = .recording
+            DispatchQueue.main.async {
+                self.audioManager.startRecording()
+                self.audioManager.startSpeechToText(lanague: listenLang)
+                button.status = .recording
+            }
         }
     }
     
-    
+    //MARK:  pending for send to server
     // function to be executed after recording is finished
     func handleRecordingCompletion(url: URL?, fileSize: Double) {
         print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
