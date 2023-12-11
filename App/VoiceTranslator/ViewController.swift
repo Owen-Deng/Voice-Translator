@@ -129,6 +129,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
             DispatchQueue.main.async {
                 self.audioManager.startRecording()
                 self.audioManager.startSpeechToText(lanague: listenLang)
+                self.audioManager.buttonView=button// for animation
                 button.status = .recording
             }
         }

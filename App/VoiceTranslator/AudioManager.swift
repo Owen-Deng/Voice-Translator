@@ -33,7 +33,13 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     let audioEngine = AVAudioEngine() //must init before session out of the function
  
     var buttonView:SpeakButtonView?
-    var audioPower:Float=0.0
+    var audioPower:Float=0.0{ //from -30 to 0 , 0 to 30 1.0-1.3
+        didSet{
+            if let view=buttonView{
+                view.circleScaleRate=CGFloat((audioPower+30)/100+2/3)    // for 2/3 to 1
+            }
+        }
+    }
     
     override init() {
         super.init()
@@ -80,9 +86,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                     let recognizedText = result.bestTranscription.formattedString
                 
                    // print("Recognized Text: \(recognizedText)")
-                    audioRecorder!.updateMeters()
-                    audioPower=audioRecorder?.peakPower(forChannel: 0) ?? 0.0
-                    print("audioPower: \(audioPower)")
+//                    audioRecorder!.updateMeters()
+//                    audioPower=audioRecorder?.peakPower(forChannel: 0) ?? 0.0
+//                   // print("audioPower: \(audioPower)")
                     self.speechText=recognizedText
                 } else if let error = error {
                     print("Speech recognition error: \(error.localizedDescription)")
@@ -93,6 +99,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             audioEngine.inputNode.installTap(onBus: 0, bufferSize: 1024, format: audioEngine.inputNode.outputFormat(forBus: 0)) {
                 (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
                 self.recognitionRequest?.append(buffer)
+                self.processPower(buffer)
             }
             audioEngine.prepare()
             do{
@@ -106,6 +113,31 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                 print("Error setting up speech recognition: \(error.localizedDescription)")
         }
     }
+    
+    
+    private func processPower(_ buffer: AVAudioPCMBuffer){
+        DispatchQueue.main.async {
+            self.audioRecorder!.updateMeters()
+            self.audioPower=self.audioRecorder?.peakPower(forChannel: 0) ?? 0.0
+        }
+      
+    }
+    
+    private func processAudioBuffer(_ buffer: AVAudioPCMBuffer) {
+          // Access audio buffer data
+          let audioBuffer = buffer.floatChannelData?.pointee
+
+          // Process audio data (calculate power levels, etc.)
+          // Example: Calculate the average power level
+          var sum: Float = 0.0
+          for i in 0..<Int(buffer.frameLength) {
+              sum += abs(audioBuffer?[i] ?? 0.0)
+          }
+          let averagePower = sum / Float(buffer.frameLength)
+
+          print("Average Power: \(averagePower)")
+    }
+    
     
     // Function to stop speech-to-text recognition
     func stopSpeechToText() {
