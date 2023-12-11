@@ -123,20 +123,6 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
       
     }
     
-    private func processAudioBuffer(_ buffer: AVAudioPCMBuffer) {
-          // Access audio buffer data
-          let audioBuffer = buffer.floatChannelData?.pointee
-
-          // Process audio data (calculate power levels, etc.)
-          // Example: Calculate the average power level
-          var sum: Float = 0.0
-          for i in 0..<Int(buffer.frameLength) {
-              sum += abs(audioBuffer?[i] ?? 0.0)
-          }
-          let averagePower = sum / Float(buffer.frameLength)
-
-          print("Average Power: \(averagePower)")
-    }
     
     
     // Function to stop speech-to-text recognition
@@ -169,7 +155,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         // Set up audio recorder settings
         let audioSettings: [String: Any] = [
             AVFormatIDKey: kAudioFormatLinearPCM,
-            AVSampleRateKey: 44100.0,
+            AVSampleRateKey: 22050.0,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
@@ -210,7 +196,6 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
         }
     }
     
-    
     func playBack(playUrl:URL?){
         if let playingURl=playUrl{
             do {
@@ -222,7 +207,9 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                 audioPlayer?.volume=1.0
                 audioPlayer?.prepareToPlay()
                 audioPlayer?.play()
-                print("Start playing: \(playingURl)")
+                // Start a timer to update the power levels
+              
+                 print("Start playing: \(playingURl)")
             }catch{
                 print("Playing error \(error.localizedDescription)")
             }

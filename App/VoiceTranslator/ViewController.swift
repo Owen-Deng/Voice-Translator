@@ -111,6 +111,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //set active
     // start listen function both recording and speechto text
     func startListen( button: SpeakButtonView){
+        NSLog("Starting recording\(Date())")
         var listenLang="English" //default value
         if activeStatus == .noActive{
             if button == myButtonView {
@@ -152,14 +153,13 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         if button.status == .recording{
             audioManager.stopRecording(success: true)
             audioManager.stopSpeechToText()
-            button.status = .loading // turn the recording to loading
         }
     }
     
     //send user's audio and translated voice to server
     var connectManager=ConnectManager.shared
     func sendSession(speechText:String,audioFileUrl:URL?){
-        NSLog("StartSendData: ",speechText )
+        NSLog("Start Send Data Time: \(Date())" )
         var srcLan="en"
         var tarLan="zh"
         if activeStatus == .myActive{
@@ -180,7 +180,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                     case .success(let data):
                        
                
-                        print("Success! Data received, Data: \(Date()) Date:\(data)")
+                        NSLog("Success! Data received, Data: \(Date())")
 //                        self.playData(audioData: data)
                         
                         guard let fileURL = self.saveDataToFile(data, withExtension: "wav") else {
@@ -217,27 +217,6 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                 return nil
             }
     }
-    
-    
-    var audioPlayer: AVAudioPlayer?
-    func playData(audioData:Data){
-        do {
-            // Set up and activate the audio session
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-
-                   // Create an AVAudioPlayer with the downloaded audio data
-            audioPlayer = try AVAudioPlayer(data: audioData)
-            audioPlayer?.delegate = self
-            audioPlayer?.prepareToPlay()
-
-                   // Start playing the audio
-            audioPlayer?.play()
-        } catch let error {
-            print("Error playing audio: \(error.localizedDescription)")
-        }
-    }
-    
     
     
     // start play the audio from server

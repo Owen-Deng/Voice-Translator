@@ -105,6 +105,7 @@ class SpeakButtonView:UIView{
                    // ... (additional updates)
         case .loading:
                    // Update UI for loading state
+            setNeedsDisplay()
             print("Loading button")
             performRotationAnimation()
                    // ... (additional updates)
