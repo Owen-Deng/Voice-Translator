@@ -57,7 +57,14 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
         if let index = LANGUAGENAMES.firstIndex(of: lan) {
             return LANGUAGEIOS[index]
         }
-        return ""
+        return "en-US" // default
+    }
+    
+    func getLanguageServerStr(_ lan:String)->String{
+        if let index = LANGUAGENAMES.firstIndex(of: lan) {
+            return LANGUAGESEVER[index]
+        }
+        return "en" //default
     }
     
     //UI properties
@@ -103,7 +110,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
     //set active
     // start listen function both recording and speechto text
     func startListen( button: SpeakButtonView){
-        var listenLang="English"
+        var listenLang="English" //default value
         if activeStatus == .noActive{
             if button == myButtonView {
                 activeStatus = .myActive
@@ -127,13 +134,9 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
     // function to be executed after recording is finished
     func handleRecordingCompletion(url: URL?, fileSize: Double) {
         print("Recording completed. File size: \(fileSize) KB. URL: \(url?.path ?? "Unknown path")")
-        print("Finaly the contexnt about the \(audioManager.speechText ?? "")")
-        if activeStatus == .myActive{
-            myButtonView.status = .loading
-        }else{
-            yourButtonView.status = .loading
-        }
-        sendSession() // after recoding then send
+        print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
+       
+        
     }
     
     
@@ -147,8 +150,41 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate {
     }
     
     //send user's audio and translated voice to server
-    func sendSession(){
-//        NSLog("StartSendData", )
+    var connectManager=ConnectManager.shared
+    func sendSession(speechText:String,audioFileUrl:URL?){
+        NSLog("StartSendData: ",speechText )
+        var srcLan="en"
+        var tarLan="zh"
+        if activeStatus == .myActive{
+            srcLan=getLanguageServerStr(myLanguage)
+            tarLan=getLanguageServerStr(yourLanguage)
+            myButtonView.status = .loading
+        }else if activeStatus == .yourActive{
+            srcLan=getLanguageServerStr(yourLanguage)
+            tarLan=getLanguageServerStr(myLanguage)
+            yourButtonView.status = .loading
+        }
+        if let urlPath=audioFileUrl, speechText != "" {
+            
+            do {
+                let audioData = try Data(contentsOf: urlPath )
+                connectManager.sendAudioPostRequest(srcLan: srcLan, tarLan: tarLan, text: speechText, audioData: audioData){result in
+                    switch result {
+                    case .success(let data):
+                        self.activeStatus = .noActive
+                        print("Success! Data received, Data: \(Date()) Date:\(data)")
+                    case .failure(let error):
+                        self.activeStatus = .noActive
+                        print("Error: \(error.localizedDescription)")
+                    }
+                }
+            }catch {
+                print(" not able to upload data\(error)")
+            }
+          
+        }
+       
+        
     }
     
     // start play the audio from server
