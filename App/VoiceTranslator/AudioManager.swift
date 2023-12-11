@@ -78,17 +78,11 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             let session=AVAudioSession.sharedInstance()
             try session.setCategory(.record, mode: .default, options: [])
             try session.setActive(true,options: .notifyOthersOnDeactivation)
-
                     // Set up recognition task
             recognitionTask = recognizer.recognitionTask(with: recognitionRequest) { [unowned self] result, error in
                 if let result = result {
                             // Extract the recognized text from the result
                     let recognizedText = result.bestTranscription.formattedString
-                
-                   // print("Recognized Text: \(recognizedText)")
-//                    audioRecorder!.updateMeters()
-//                    audioPower=audioRecorder?.peakPower(forChannel: 0) ?? 0.0
-//                   // print("audioPower: \(audioPower)")
                     self.speechText=recognizedText
                 } else if let error = error {
                     print("Speech recognition error: \(error.localizedDescription)")
@@ -127,9 +121,14 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     
     // Function to stop speech-to-text recognition
     func stopSpeechToText() {
-        audioRecorder?.stop()
-        recognitionRequest?.endAudio()
-        audioEngine.inputNode.removeTap(onBus: 0)
+        if audioEngine.isRunning{
+            audioEngine.stop()
+            audioRecorder?.stop()
+            recognitionRequest?.endAudio()
+            audioEngine.inputNode.removeTap(onBus: 0)
+        }
+        
+      
     }
     
     
@@ -231,6 +230,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     
     // MARK: - AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+   
         if flag{
             print("Play finished succeed")
             playingCompletion?(recordingURL,flag)
@@ -238,6 +238,13 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             print("Play finished unsucceed")
             playingCompletion?(recordingURL,flag)
         }
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        } catch {
+            print("Failed to deactivate audio session: \(error.localizedDescription)")
+        }
+        
+        NSLog("Play Finished\(Date())")
     }
 
     func getFileSize(url: URL?) -> Double? {

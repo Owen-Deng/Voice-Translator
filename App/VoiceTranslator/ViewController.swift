@@ -181,8 +181,6 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                        
                
                         NSLog("Success! Data received, Data: \(Date())")
-//                        self.playData(audioData: data)
-                        
                         guard let fileURL = self.saveDataToFile(data, withExtension: "wav") else {
                                  print("Error saving data to file")
                                  return
