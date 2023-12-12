@@ -16,6 +16,7 @@
 
 import UIKit
 import AVFAudio
+import JDStatusBarNotification
 
 struct Colors {
     static let primary=UIColor(red: 103/255.0, green: 80/255.0, blue: 164/255.0, alpha: 1.0) //6750A4
@@ -86,6 +87,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupVC()
+
     }
     
     //view controller setup function
@@ -149,8 +151,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
         if let speechText = audioManager.speechText{
             sendSession(speechText: speechText, audioFileUrl: url)
-            hideProgressbar()
         }
+        hideProgressbar()
     }
     
     var timer=Timer();
@@ -192,6 +194,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //send user's audio and translated voice to server
     var connectManager=ConnectManager.shared
     func sendSession(speechText:String,audioFileUrl:URL?){
+        if audioManager.isDetectSpeech{
+      
         NSLog("Start Send Data Time: \(Date())" )
         var srcLan="en"
         var tarLan="zh"
@@ -227,11 +231,22 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                         }
                         self.activeStatus = .noActive
                         print("Error: \(error.localizedDescription)")
+                        self.showMessage(error.localizedDescription)
                     }
                 }
             }catch {
                 print(" not able to upload data\(error)")
+                self.showMessage(error.localizedDescription)
             }
+        }
+        }else{
+            if self.activeStatus == .myActive{
+                self.myButtonView.status = .normal
+            }else if self.activeStatus == .yourActive{
+                self.yourButtonView.status = .normal
+            }
+            self.activeStatus = .noActive
+            showMessage("No any speech detected")
         }
     }
     
@@ -245,6 +260,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                 return tempFileURL
             } catch {
                 print("Error saving data to file: \(error)")
+                self.showMessage(error.localizedDescription)
                 return nil
             }
     }
@@ -275,7 +291,10 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         activeStatus = .noActive
     }
     
-    
+    //show toast message
+    func showMessage(_ message:String){
+        NotificationPresenter.shared.present(message)
+    }
     
     
 }

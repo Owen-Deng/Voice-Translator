@@ -8,6 +8,7 @@
 import Foundation
 import AVFoundation
 import Speech
+import JDStatusBarNotification
 
 
 
@@ -40,6 +41,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             }
         }
     }
+    var isDetectSpeech = false
     
     override init() {
         super.init()
@@ -60,7 +62,8 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     
     //start speechto text
     func startSpeechToText(lanague:String){
-        speechRecognizer=SFSpeechRecognizer(locale: Locale(identifier: lanague)) 
+        isDetectSpeech=false
+        speechRecognizer=SFSpeechRecognizer(locale: Locale(identifier: lanague))
         
         guard let recognizer = speechRecognizer, recognizer.isAvailable else {
                     print("Speech recognition is not available.")
@@ -84,8 +87,10 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                             // Extract the recognized text from the result
                     let recognizedText = result.bestTranscription.formattedString
                     self.speechText=recognizedText
+                    isDetectSpeech=true
                 } else if let error = error {
                     print("Speech recognition error: \(error.localizedDescription)")
+                    showMessage(error.localizedDescription)
                 }
             }
 
@@ -105,6 +110,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
         } catch {
                 print("Error setting up speech recognition: \(error.localizedDescription)")
+            showMessage(error.localizedDescription)
         }
     }
     
@@ -192,6 +198,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Failed to deactivate audio session: \(error.localizedDescription)")
+            showMessage(error.localizedDescription)
         }
     }
     
@@ -211,6 +218,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
                  print("Start playing: \(playingURl)")
             }catch{
                 print("Playing error \(error.localizedDescription)")
+                showMessage(error.localizedDescription)
             }
         }
     }
@@ -242,6 +250,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Failed to deactivate audio session: \(error.localizedDescription)")
+            showMessage(error.localizedDescription)
         }
         
         NSLog("Play Finished\(Date())")
@@ -258,6 +267,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             }
         } catch {
             print("Error getting file size: \(error.localizedDescription)")
+            showMessage(error.localizedDescription)
         }
 
         return nil
@@ -265,6 +275,11 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
 
     func getCompletedRecording() -> URL? {
         return recordingURL
+    }
+    
+    //show toast message
+    func showMessage(_ message:String){
+        NotificationPresenter.shared.present(message)
     }
 }
 
