@@ -22,11 +22,7 @@ Swift, Custom UIView, Speech framework,Grand Central Dispatch(GCD), AVFoundation
 
 
 ### Server
-<<<<<<< HEAD
 Python, Fastapi, Pytorch, Cuda, [XTTS](https://github.com/coqui-ai/tts).
-=======
-Python, Fastapi, Pytorch, XTTS(https://github.com/coqui-ai/TTS), CUDA, Argos Translate.
->>>>>>> 4ded104e4fddfb2762f6181516a3eb3f9eed41d5
 
 ## Showcase
 
