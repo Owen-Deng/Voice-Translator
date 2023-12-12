@@ -18,10 +18,11 @@ The Voice Translator App and Server is a project that enables users to interacti
 ## Tech
 
 ### iOS
-Custom UIView, Speech framework. Grand Central Dispatch(GCD).
+Swift, Custom UIView, Speech framework,Grand Central Dispatch(GCD), AVFoundation. 
+
 
 ### Server
-
+Python, Fastapi, Pytorch, Cuda, [XTTS](https://github.com/coqui-ai/tts).
 
 ## Showcase
 
