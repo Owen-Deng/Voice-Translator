@@ -75,8 +75,9 @@ class ConnectManager: NSObject, URLSessionDelegate{
     
     func sendAudioPostRequest(srcLan:String, tarLan:String,text: String, audioData: Data, completion: @escaping (Result<Data, Error>) -> Void) {
  
-//{host}/EZGenerate?text={text}&src_lang=en&tar_lang=zh&debug=False
-        let urlString = "\(baseURL)/EZGenerate?text=\(text)&src_lang=\(srcLan)&tar_lang=\(tarLan)&debug=False"
+        //{host}/EZGenerate?text={text}&src_lang=en&tar_lang=zh&debug=False
+        let encodedText = text.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+        let urlString = "\(baseURL)/EZGenerate?text=\(encodedText!)&src_lang=\(srcLan)&tar_lang=\(tarLan)&debug=False"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
             return
