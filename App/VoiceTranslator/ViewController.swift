@@ -16,6 +16,7 @@
 
 import UIKit
 import AVFAudio
+import JDStatusBarNotification
 
 struct Colors {
     static let primary=UIColor(red: 103/255.0, green: 80/255.0, blue: 164/255.0, alpha: 1.0) //6750A4
@@ -86,6 +87,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupVC()
+
     }
     
     //view controller setup function
@@ -149,8 +151,10 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
         if let speechText = audioManager.speechText{
             sendSession(speechText: speechText, audioFileUrl: url)
-            hideProgressbar()
+        }else{
+            processingInterrupted(nil)
         }
+        hideProgressbar()
     }
     
     var timer=Timer();
@@ -192,6 +196,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //send user's audio and translated voice to server
     var connectManager=ConnectManager.shared
     func sendSession(speechText:String,audioFileUrl:URL?){
+        if audioManager.isDetectSpeech{
+      
         NSLog("Start Send Data Time: \(Date())" )
         var srcLan="en"
         var tarLan="zh"
@@ -220,19 +226,34 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                         }
                         self.playSpeaking(audioUrl: fileURL)
                     case .failure(let error):
-                        if self.activeStatus == .myActive{
-                            self.myButtonView.status = .normal
-                        }else if self.activeStatus == .yourActive{
-                            self.yourButtonView.status = .normal
+                        DispatchQueue.main.async {
+                            self.processingInterrupted(nil)
                         }
-                        self.activeStatus = .noActive
                         print("Error: \(error.localizedDescription)")
                     }
                 }
             }catch {
                 print(" not able to upload data\(error)")
+                self.showMessage(error.localizedDescription)
             }
         }
+        }else{
+            processingInterrupted("No speech detected")
+        }
+    }
+    
+    // for any situation to stop the processing turn the ui to normal, no speech , received fail, playing complete
+    func processingInterrupted(_ mess:String?){
+        if self.activeStatus == .myActive{
+            self.myButtonView.status = .normal
+        }else if self.activeStatus == .yourActive{
+            self.yourButtonView.status = .normal
+        }
+        self.activeStatus = .noActive
+        if let message=mess{
+            showMessage(message)
+        }
+
     }
     
     // save the data to local file then will be play
@@ -245,6 +266,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                 return tempFileURL
             } catch {
                 print("Error saving data to file: \(error)")
+                self.showMessage(error.localizedDescription)
                 return nil
             }
     }
@@ -267,15 +289,14 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //function to be excuted after playing is finished
     func handlePlayingCompletion(url:URL?,succeed:Bool){
         print("Playing completed, File URL:\(url?.path ?? "Unknown path"),status:\(succeed)")
-        if activeStatus == .myActive{
-            myButtonView.status = .normal
-        }else{
-            yourButtonView.status = .normal
-        }
-        activeStatus = .noActive
+        processingInterrupted(nil)
     }
     
-    
+    //show toast message
+    func showMessage(_ message:String){
+        NotificationPresenter.shared.present(message)
+        NotificationPresenter.shared.dismiss(after: 1)
+    }
     
     
 }

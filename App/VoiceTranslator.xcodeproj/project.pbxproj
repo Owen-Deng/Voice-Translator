@@ -11,6 +11,7 @@
 		CC0CA93C2B1FFE6D00E13D08 /* SpeakButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93B2B1FFE6D00E13D08 /* SpeakButtonView.swift */; };
 		CC0CA93E2B1FFF9C00E13D08 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93D2B1FFF9C00E13D08 /* ProgressBarView.swift */; };
 		CC0CA9402B20027100E13D08 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0CA93F2B20027100E13D08 /* AudioManager.swift */; };
+		CCC1FDA32B28C74500362809 /* JDStatusBarNotification in Frameworks */ = {isa = PBXBuildFile; productRef = CCC1FDA22B28C74500362809 /* JDStatusBarNotification */; };
 		CCC2F6122B1FEF6E00F26E53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6112B1FEF6E00F26E53 /* AppDelegate.swift */; };
 		CCC2F6142B1FEF6E00F26E53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6132B1FEF6E00F26E53 /* SceneDelegate.swift */; };
 		CCC2F6162B1FEF6E00F26E53 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2F6152B1FEF6E00F26E53 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCC1FDA32B28C74500362809 /* JDStatusBarNotification in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +97,9 @@
 			dependencies = (
 			);
 			name = VoiceTranslator;
+			packageProductDependencies = (
+				CCC1FDA22B28C74500362809 /* JDStatusBarNotification */,
+			);
 			productName = VoiceTranslator;
 			productReference = CCC2F60E2B1FEF6E00F26E53 /* VoiceTranslator.app */;
 			productType = "com.apple.product-type.application";
@@ -123,6 +128,9 @@
 				Base,
 			);
 			mainGroup = CCC2F6052B1FEF6E00F26E53;
+			packageReferences = (
+				CCC1FDA12B28C74500362809 /* XCRemoteSwiftPackageReference "JDStatusBarNotification" */,
+			);
 			productRefGroup = CCC2F60F2B1FEF6E00F26E53 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -381,6 +389,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CCC1FDA12B28C74500362809 /* XCRemoteSwiftPackageReference "JDStatusBarNotification" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/calimarkus/JDStatusBarNotification.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CCC1FDA22B28C74500362809 /* JDStatusBarNotification */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CCC1FDA12B28C74500362809 /* XCRemoteSwiftPackageReference "JDStatusBarNotification" */;
+			productName = JDStatusBarNotification;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CCC2F6062B1FEF6E00F26E53 /* Project object */;
 }

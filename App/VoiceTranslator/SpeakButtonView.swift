@@ -44,8 +44,10 @@ class SpeakButtonView:UIView{
     
     // status for update the button ui animation.
     var status:ButtonViewStatus = .normal {
-        didSet {updateUIForStatus()}}
-        // MARK: - Initialization
+        didSet {
+            updateUIForStatus()
+          
+        }}
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -102,6 +104,13 @@ class SpeakButtonView:UIView{
         case .normal:
                    // Update UI for normal state
                    print("Normal button")
+            DispatchQueue.main.async {
+                self.setNeedsDisplay()
+                if self.isRotating{
+                    self.stopRotationAnimation()
+                }
+            }
+  
                    // ... (additional updates)
         case .loading:
                    // Update UI for loading state

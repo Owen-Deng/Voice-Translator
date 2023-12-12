@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import JDStatusBarNotification
 
 let SERVER_URL = "http://192.168.50.219:8080" // change this for your server name!!!
 
@@ -75,8 +76,10 @@ class ConnectManager: NSObject, URLSessionDelegate{
     
     func sendAudioPostRequest(srcLan:String, tarLan:String,text: String, audioData: Data, completion: @escaping (Result<Data, Error>) -> Void) {
  
-        //{host}/EZGenerate?text={text}&src_lang=en&tar_lang=zh&debug=False
+
+//{host}/EZGenerate?text={text}&src_lang=en&tar_lang=zh&debug=False
         let encodedText = text.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+
         let urlString = "\(baseURL)/EZGenerate?text=\(encodedText!)&src_lang=\(srcLan)&tar_lang=\(tarLan)&debug=False"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
@@ -89,6 +92,8 @@ class ConnectManager: NSObject, URLSessionDelegate{
 
         let task = session.dataTask(with: request) { data, response, error in
                if let error = error {
+                   self.showMessage(error.localizedDescription)
+                   print("CM error:\(error.localizedDescription)")
                    completion(.failure(error))
                    return
                }
@@ -109,6 +114,16 @@ class ConnectManager: NSObject, URLSessionDelegate{
 
         task.resume()
     }
+    
+    //show toast message
+    func showMessage(_ message:String){
+        DispatchQueue.main.async {
+            NotificationPresenter.shared.present(message)
+            NotificationPresenter.shared.dismiss(after: 1.5)
+        }
+ 
+    }
+    
     
 }
 
