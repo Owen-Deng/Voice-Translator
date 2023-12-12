@@ -26,6 +26,7 @@ Python, Fastapi, Pytorch, Cuda, [XTTS](https://github.com/coqui-ai/tts).
 
 ## Showcase
 
+![Video](https://www.youtube.com/watch?v=oQ_5EHPDpcU)
 
 ## Usage
 1. Support Python 3.11.5
