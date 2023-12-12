@@ -226,7 +226,9 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                         }
                         self.playSpeaking(audioUrl: fileURL)
                     case .failure(let error):
-                        self.processingInterrupted(error.localizedDescription)
+                        DispatchQueue.main.async {
+                            self.processingInterrupted(nil)
+                        }
                         print("Error: \(error.localizedDescription)")
                     }
                 }

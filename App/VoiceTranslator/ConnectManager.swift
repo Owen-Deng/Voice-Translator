@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import JDStatusBarNotification
 
 let SERVER_URL = "http://192.168.50.219:8080" // change this for your server name!!!
 
@@ -88,6 +89,8 @@ class ConnectManager: NSObject, URLSessionDelegate{
 
         let task = session.dataTask(with: request) { data, response, error in
                if let error = error {
+                   self.showMessage(error.localizedDescription)
+                   print("CM error:\(error.localizedDescription)")
                    completion(.failure(error))
                    return
                }
@@ -108,6 +111,15 @@ class ConnectManager: NSObject, URLSessionDelegate{
 
         task.resume()
     }
+    
+    //show toast message
+    func showMessage(_ message:String){
+        DispatchQueue.main.async {
+            NotificationPresenter.shared.present(message)
+        }
+ 
+    }
+    
     
 }
 
