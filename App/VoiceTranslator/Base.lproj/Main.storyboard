@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -16,11 +17,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-BG-NG1">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="426"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Foz-hh-VTb" customClass="SpeakButtonView" customModule="VoiceTranslator" customModuleProvider="target">
+                                        <rect key="frame" x="118" y="134.66666666666669" width="157" height="156.66666666666669"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="KQU-Bw-9Eh"/>
+                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="NLi-O7-6Vt"/>
+                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="QWg-Xw-qUG"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="ringColor">
+                                                <color key="value" red="0.4039215686" green="0.31372549020000001" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="gapAngle">
+                                                <real key="value" value="30"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mandarin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0lH-5T-VLq">
+                                        <rect key="frame" x="161" y="65" width="71.333333333333314" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.12941176470588234" green="0.0" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.91764705882352937" green="0.8666666666666667" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="0lH-5T-VLq" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="WD3-Dj-PmP"/>
+                                    <constraint firstItem="Foz-hh-VTb" firstAttribute="centerY" secondItem="b3B-BG-NG1" secondAttribute="centerY" id="esB-MS-CT7"/>
+                                    <constraint firstItem="Foz-hh-VTb" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="h3H-cx-TiO"/>
+                                    <constraint firstItem="0lH-5T-VLq" firstAttribute="top" secondItem="b3B-BG-NG1" secondAttribute="top" constant="65" id="l24-Cx-mZn"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1ZW-pe-REB">
-                                <rect key="frame" x="0.0" y="426" width="393" height="426"/>
+                                <rect key="frame" x="0.0" y="426" width="393" height="392"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jmA-ew-AZ8" customClass="SpeakButtonView" customModule="VoiceTranslator" customModuleProvider="target">
-                                        <rect key="frame" x="111.33333333333333" y="127.66666666666661" width="170.33333333333337" height="170.66666666666657"/>
+                                        <rect key="frame" x="118" y="117.66666666666661" width="157" height="156.66666666666663"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
@@ -36,7 +73,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4t-5o-OAk">
-                                        <rect key="frame" x="169" y="360" width="55" height="21"/>
+                                        <rect key="frame" x="169" y="326" width="55" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -72,56 +109,60 @@
                                     <constraint firstItem="llq-9H-rAf" firstAttribute="width" secondItem="1ZW-pe-REB" secondAttribute="width" id="uoa-Kb-maR"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b3B-BG-NG1">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="426"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Foz-hh-VTb" customClass="SpeakButtonView" customModule="VoiceTranslator" customModuleProvider="target">
-                                        <rect key="frame" x="111.33333333333333" y="127.66666666666667" width="170.33333333333337" height="170.66666666666657"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <gestureRecognizers/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="KQU-Bw-9Eh"/>
-                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="NLi-O7-6Vt"/>
-                                            <constraint firstAttribute="width" secondItem="Foz-hh-VTb" secondAttribute="height" multiplier="1:1" id="QWg-Xw-qUG"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="ringColor">
-                                                <color key="value" red="0.4039215686" green="0.31372549020000001" blue="0.64313725489999995" alpha="1" colorSpace="calibratedRGB"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="gapAngle">
-                                                <real key="value" value="30"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mamdarin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0lH-5T-VLq">
-                                        <rect key="frame" x="158.66666666666666" y="65" width="76" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.12941176470588234" green="0.0" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.91764705882352937" green="0.8666666666666667" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="0lH-5T-VLq" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="WD3-Dj-PmP"/>
-                                    <constraint firstItem="Foz-hh-VTb" firstAttribute="centerY" secondItem="b3B-BG-NG1" secondAttribute="centerY" id="esB-MS-CT7"/>
-                                    <constraint firstItem="Foz-hh-VTb" firstAttribute="centerX" secondItem="b3B-BG-NG1" secondAttribute="centerX" id="h3H-cx-TiO"/>
-                                    <constraint firstItem="0lH-5T-VLq" firstAttribute="top" secondItem="b3B-BG-NG1" secondAttribute="top" constant="65" id="l24-Cx-mZn"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="1ZW-pe-REB" firstAttribute="top" secondItem="b3B-BG-NG1" secondAttribute="bottom" id="0Hx-C3-edu"/>
                             <constraint firstItem="1ZW-pe-REB" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2Iv-g5-AnX"/>
+                            <constraint firstAttribute="bottom" secondItem="b3B-BG-NG1" secondAttribute="bottom" id="9FM-Jl-5mM"/>
+                            <constraint firstItem="b3B-BG-NG1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Fiw-It-XDv"/>
                             <constraint firstItem="b3B-BG-NG1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JVi-0f-B8b"/>
+                            <constraint firstItem="b3B-BG-NG1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="LLc-D2-z4w"/>
                             <constraint firstItem="b3B-BG-NG1" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NSS-un-3gW"/>
+                            <constraint firstItem="b3B-BG-NG1" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="PuW-q7-jN6"/>
                             <constraint firstItem="Foz-hh-VTb" firstAttribute="width" secondItem="jmA-ew-AZ8" secondAttribute="width" id="Uhw-CJ-g2M"/>
                             <constraint firstItem="1ZW-pe-REB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="UlK-tH-UJt"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1ZW-pe-REB" secondAttribute="bottom" id="agI-U2-GQv"/>
+                            <constraint firstItem="1ZW-pe-REB" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cSW-82-WwY"/>
                             <constraint firstItem="b3B-BG-NG1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="e2h-d5-pv8"/>
+                            <constraint firstItem="1ZW-pe-REB" firstAttribute="width" secondItem="b3B-BG-NG1" secondAttribute="width" id="gDx-GB-RBd"/>
                             <constraint firstItem="b3B-BG-NG1" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="nep-fO-L6f"/>
                             <constraint firstAttribute="bottom" secondItem="1ZW-pe-REB" secondAttribute="bottom" id="qi0-Kh-oCd"/>
+                            <constraint firstItem="b3B-BG-NG1" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="rq6-Y3-efX"/>
+                            <constraint firstAttribute="trailing" secondItem="1ZW-pe-REB" secondAttribute="trailing" id="zhd-0U-RY8"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="PuW-q7-jN6"/>
+                                <exclude reference="9FM-Jl-5mM"/>
+                                <exclude reference="Fiw-It-XDv"/>
+                                <exclude reference="zhd-0U-RY8"/>
+                                <exclude reference="cSW-82-WwY"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="PuW-q7-jN6"/>
+                                <include reference="9FM-Jl-5mM"/>
+                                <exclude reference="nep-fO-L6f"/>
+                                <exclude reference="e2h-d5-pv8"/>
+                                <exclude reference="JVi-0f-B8b"/>
+                                <include reference="Fiw-It-XDv"/>
+                                <exclude reference="agI-U2-GQv"/>
+                                <include reference="zhd-0U-RY8"/>
+                                <exclude reference="2Iv-g5-AnX"/>
+                                <exclude reference="UlK-tH-UJt"/>
+                                <exclude reference="0Hx-C3-edu"/>
+                                <include reference="cSW-82-WwY"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="rq6-Y3-efX"/>
+                                <exclude reference="qi0-Kh-oCd"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="myButtonView" destination="jmA-ew-AZ8" id="GDe-e4-O4t"/>
@@ -133,7 +174,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
+            <point key="canvasLocation" x="130.28169014084509" y="-35.877862595419849"/>
         </scene>
     </scenes>
     <resources>
