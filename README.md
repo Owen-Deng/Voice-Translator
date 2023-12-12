@@ -15,14 +15,18 @@ The Voice Translator App and Server is a project that enables users to interacti
 - **Real-time Interaction**: It has a relatively high response speed and supports real-time face-to-face conversations for two individuals.
 - **Voice mimic**: Generated translation is baed on user own voice. It develege the ML on Server.
 
-## Tech
+## Framwork & tools
 
 ### iOS
 Swift, Custom UIView, Speech framework,Grand Central Dispatch(GCD), AVFoundation. 
 
 
 ### Server
+<<<<<<< HEAD
 Python, Fastapi, Pytorch, Cuda, [XTTS](https://github.com/coqui-ai/tts).
+=======
+Python, Fastapi, Pytorch, XTTS(https://github.com/coqui-ai/TTS), CUDA, Argos Translate.
+>>>>>>> 4ded104e4fddfb2762f6181516a3eb3f9eed41d5
 
 ## Showcase
 
