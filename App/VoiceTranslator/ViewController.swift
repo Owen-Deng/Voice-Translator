@@ -77,6 +77,9 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     
     @IBOutlet weak var yourLabel: UILabel!
     
+    @IBOutlet weak var progressbarView: ProgressBarView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -112,6 +115,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     // start listen function both recording and speechto text
     func startListen( button: SpeakButtonView){
         NSLog("Starting recording\(Date())")
+        showProgressbar() // show the progress bar and limited 20s
         var listenLang="English" //default value
         if activeStatus == .noActive{
             if button == myButtonView {
@@ -143,8 +147,35 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
         if let speechText = audioManager.speechText{
             sendSession(speechText: speechText, audioFileUrl: url)
+            hideProgressbar()
         }
-      
+    }
+    
+    var timer=Timer();
+    func showProgressbar(){
+        progressbarView.isHidden=false
+        progressbarView.progressValue=0.0
+        var counter=1
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            self.progressbarView.progressValue=CGFloat(counter)
+            if counter == 21 {
+                timer.invalidate()
+                self.hideProgressbar()
+                if self.activeStatus == .myActive{
+                    self.stopListen(button: self.myButtonView)
+                }else if self.activeStatus == .yourActive{
+                    self.stopListen(button: self.yourButtonView)
+                }
+            }
+            counter += 1
+        }
+    }
+    
+    func hideProgressbar(){
+        // Stop the timer after reaching 20 seconds
+        timer.invalidate()
+        self.progressbarView.isHidden=true
+        self.progressbarView.progressValue=0.0
     }
     
     
@@ -202,7 +233,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         }
     }
     
-    
+    // save the data to local file then will be play
     private func saveDataToFile(_ data: Data, withExtension fileExtension: String) -> URL? {
             let tempDirectoryURL = FileManager.default.temporaryDirectory
             let tempFileURL = tempDirectoryURL.appendingPathComponent("tempAudioFile.\(fileExtension)")

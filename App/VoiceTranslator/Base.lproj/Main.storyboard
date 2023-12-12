@@ -42,14 +42,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llq-9H-rAf" customClass="ProgressBarView" customModule="VoiceTranslator" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="15"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="g7B-ti-M4P"/>
+                                            <constraint firstAttribute="height" constant="15" id="g7B-ti-M4P"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="progressValue">
-                                                <real key="value" value="10"/>
+                                                <real key="value" value="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="lineColor">
                                                 <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -126,6 +126,7 @@
                     <connections>
                         <outlet property="myButtonView" destination="jmA-ew-AZ8" id="GDe-e4-O4t"/>
                         <outlet property="myLabel" destination="c4t-5o-OAk" id="5lS-7g-rbz"/>
+                        <outlet property="progressbarView" destination="llq-9H-rAf" id="moi-hE-wqQ"/>
                         <outlet property="yourButtonView" destination="Foz-hh-VTb" id="hGl-Gf-Ymz"/>
                         <outlet property="yourLabel" destination="0lH-5T-VLq" id="Ndu-bR-KqD"/>
                     </connections>

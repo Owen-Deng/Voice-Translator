@@ -8,14 +8,9 @@
 import Foundation
 import UIKit
 
+@IBDesignable
 class ProgressBarView:UIView{
-    @IBInspectable var progressValue: CGFloat = 0.0 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var lineWidth: CGFloat = 20.0 {
+    @IBInspectable var progressValue: CGFloat = 0.0 { //from 0 to 20
         didSet {
             setNeedsDisplay()
         }
@@ -33,24 +28,28 @@ class ProgressBarView:UIView{
         }
     }
     
+    private let progressLayer=CALayer()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layer.addSublayer(progressLayer)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder:coder)
+        layer.addSublayer(progressLayer)
+
+    }
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         if visible{
-            let progressWidth = (progressValue / CGFloat(20)) * bounds.width
-            let progressPath = UIBezierPath()
-            
-            progressPath.lineWidth = lineWidth
-            progressPath.lineCapStyle = .butt
-            progressPath.move(to: CGPoint(x: 0, y: 0))
-            progressPath.addLine(to: CGPoint(x: progressWidth, y: 0))
-            lineColor.setStroke()
-            progressPath.stroke()
+            let progressRect = CGRect(origin: .zero, size: CGSize(width: rect.width * progressValue/20, height: rect.height))
+            progressLayer.frame = progressRect
+            progressLayer.backgroundColor = lineColor.cgColor
         }
     }
     
     func setProgress(value: CGFloat) {
-        if value >= 0.0 && value <= CGFloat(20) {
             progressValue = value
-        }
     }
 }
