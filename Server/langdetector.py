@@ -1,3 +1,4 @@
+# language detector for audio
 import time
 from speechbrain.pretrained import EncoderClassifier
 

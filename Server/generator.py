@@ -1,3 +1,5 @@
+#Voice Generator
+
 from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import Xtts
 import torchaudio
@@ -7,6 +9,7 @@ import time
 
 
 def get_conditioning_latents(audio_path):
+    # Voice Feature Extraction
     gpt_cond_latent, speaker_embedding = model.get_conditioning_latents(
             audio_path=audio_path,
             gpt_cond_len=conditioning_latents_settings["gpt_cond_len"],
@@ -18,12 +21,12 @@ def get_conditioning_latents(audio_path):
 
 @torch.inference_mode()
 def generate(text, language, gpt_cond_latent, speaker_embedding, output) -> str:
-    # GPT inference
+    # Audio Generation
     do_sample=True
     num_beams=1
     speed=1.0
     language = language.split("-")[0]  # remove the country code
-    length_scale = 1.0 / max(speed, 0.05)
+    length_scale = 1.0 / max(speed, 0.05) # audio speed control
     sent = text.strip().lower()
     text_tokens = torch.IntTensor(model.tokenizer.encode(sent, lang=language)).unsqueeze(0).to(model.device)
     
@@ -70,21 +73,12 @@ def generate(text, language, gpt_cond_latent, speaker_embedding, output) -> str:
         wav = torch.reshape(wav, (1,-1)).cpu()
         
         torchaudio.save(output, wav, 24000, format = "wav")
-        output.seek(0)
+        output.seek(0) # seek to the begining of the stream
         
     return ""
 
-    # outputs = model.inference(
-    #         text,
-    #         language,
-    #         gpt_cond_latent,
-    #         speaker_embedding,
-    #         **inference_settings
-    #     )
-    # wav = torch.tensor(outputs['wav']).unsqueeze(0)
-    # torchaudio.save(output_path, wav, 24000)
-
 def load():
+    # load the XTTS model
     global model, conditioning_latents_settings, inference_settings
     start_time = time.time()
     config = XttsConfig()
@@ -110,8 +104,8 @@ def load():
     print(f"XTTS model loaded! {time.time()-start_time:.2f}")
 
 if __name__ == "__main__":
-    load()
     ## testing code
+    load()
     audio_path=r"Server/audio/chinese.mp3"
     output_path = r"result.wav"
     text = "This is a test for voice generation."
