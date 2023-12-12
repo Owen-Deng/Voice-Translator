@@ -198,7 +198,6 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Failed to deactivate audio session: \(error.localizedDescription)")
-            showMessage(error.localizedDescription)
         }
     }
     

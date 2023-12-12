@@ -151,6 +151,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
         print("Finaly the contexnt:  \(audioManager.speechText ?? "")")
         if let speechText = audioManager.speechText{
             sendSession(speechText: speechText, audioFileUrl: url)
+        }else{
+            processingInterrupted(nil)
         }
         hideProgressbar()
     }
@@ -224,14 +226,8 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
                         }
                         self.playSpeaking(audioUrl: fileURL)
                     case .failure(let error):
-                        if self.activeStatus == .myActive{
-                            self.myButtonView.status = .normal
-                        }else if self.activeStatus == .yourActive{
-                            self.yourButtonView.status = .normal
-                        }
-                        self.activeStatus = .noActive
+                        self.processingInterrupted(error.localizedDescription)
                         print("Error: \(error.localizedDescription)")
-                        self.showMessage(error.localizedDescription)
                     }
                 }
             }catch {
@@ -240,14 +236,22 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
             }
         }
         }else{
-            if self.activeStatus == .myActive{
-                self.myButtonView.status = .normal
-            }else if self.activeStatus == .yourActive{
-                self.yourButtonView.status = .normal
-            }
-            self.activeStatus = .noActive
-            showMessage("No any speech detected")
+            processingInterrupted("No speech detected")
         }
+    }
+    
+    // for any situation to stop the processing turn the ui to normal, no speech , received fail, playing complete
+    func processingInterrupted(_ mess:String?){
+        if self.activeStatus == .myActive{
+            self.myButtonView.status = .normal
+        }else if self.activeStatus == .yourActive{
+            self.yourButtonView.status = .normal
+        }
+        self.activeStatus = .noActive
+        if let message=mess{
+            showMessage(message)
+        }
+
     }
     
     // save the data to local file then will be play
@@ -283,12 +287,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //function to be excuted after playing is finished
     func handlePlayingCompletion(url:URL?,succeed:Bool){
         print("Playing completed, File URL:\(url?.path ?? "Unknown path"),status:\(succeed)")
-        if activeStatus == .myActive{
-            myButtonView.status = .normal
-        }else{
-            yourButtonView.status = .normal
-        }
-        activeStatus = .noActive
+        processingInterrupted(nil)
     }
     
     //show toast message

@@ -104,7 +104,13 @@ class SpeakButtonView:UIView{
         case .normal:
                    // Update UI for normal state
                    print("Normal button")
-            setNeedsDisplay()
+            DispatchQueue.main.async {
+                self.setNeedsDisplay()
+                if self.isRotating{
+                    self.stopRotationAnimation()
+                }
+            }
+  
                    // ... (additional updates)
         case .loading:
                    // Update UI for loading state
