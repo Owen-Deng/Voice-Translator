@@ -70,6 +70,7 @@ def generate(text, language, gpt_cond_latent, speaker_embedding, output) -> str:
         wav = torch.reshape(wav, (1,-1)).cpu()
         
         torchaudio.save(output, wav, 24000, format = "wav")
+        output.seek(0)
         
     return ""
 
@@ -90,7 +91,8 @@ def load():
     config.load_json("Server/XTTS-v2/config.json")
     model = Xtts.init_from_config(config)
     model.load_checkpoint(config, checkpoint_dir="Server/XTTS-v2/", eval=True)
-    model.cuda()
+    if torch.cuda.is_available():
+        model.cuda()
 
     conditioning_latents_settings = {
         "gpt_cond_len": config.gpt_cond_len,
