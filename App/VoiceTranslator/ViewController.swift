@@ -11,6 +11,8 @@
 //- listening/ both side  ,start listen, the otherside can not interact, listen animation, progress bar,
 //- uplistenning , both can interact,
 
+// release for v1 main function ready
+
 
 import UIKit
 import AVFAudio
