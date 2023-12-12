@@ -279,6 +279,7 @@ class AudioManager: NSObject, AVAudioRecorderDelegate,AVAudioPlayerDelegate {
     //show toast message
     func showMessage(_ message:String){
         NotificationPresenter.shared.present(message)
+        NotificationPresenter.shared.dismiss(after: 1.5)
     }
 }
 

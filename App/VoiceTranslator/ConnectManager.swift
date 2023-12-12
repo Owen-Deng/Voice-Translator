@@ -118,6 +118,7 @@ class ConnectManager: NSObject, URLSessionDelegate{
     func showMessage(_ message:String){
         DispatchQueue.main.async {
             NotificationPresenter.shared.present(message)
+            NotificationPresenter.shared.dismiss(after: 1.5)
         }
  
     }

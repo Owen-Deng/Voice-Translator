@@ -295,6 +295,7 @@ class ViewController: UIViewController ,SpeakButtonViewDelegate, AVAudioPlayerDe
     //show toast message
     func showMessage(_ message:String){
         NotificationPresenter.shared.present(message)
+        NotificationPresenter.shared.dismiss(after: 1)
     }
     
     
