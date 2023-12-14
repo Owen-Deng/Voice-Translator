@@ -13,7 +13,7 @@ The Voice Translator App and Server is a project that enables users to interacti
 - **Voice Recognition**: This App can recognize user's voice and turn to the text content.
 - **Language Translation**: This App can send user's speak content to server to processing translation, At present, only Chinese and English are supported.
 - **Real-time Interaction**: It has a relatively high response speed and supports real-time face-to-face conversations for two individuals.
-- **Voice mimic**: Generated translation is baed on user own voice. It develege the ML on Server.
+- **Voice mimic**: Generated translation is baed on user own voice. It utilize the ML on Server.
 
 ## Framwork & tools
 
